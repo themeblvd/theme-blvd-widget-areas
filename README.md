@@ -1,0 +1,2 @@
+Theme-Blvd-Widget-Areas
+=======================
