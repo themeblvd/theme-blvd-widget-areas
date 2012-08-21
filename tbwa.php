@@ -33,8 +33,12 @@ define( 'TB_WA_PLUGIN_URL', plugins_url( '' , __FILE__ ) );
 /**
  * Run Widget Area Manager
  *
- * We check the user-role before running the 
- * widget area framework.
+ * In order for everything to run, we need to make 
+ * sure Theme Blvd framework v2.2+ is running. Also 
+ * to run the admin panel portion, we will also check 
+ * to make sure the user is allowed. -- This supports 
+ * the framework's filters on changing admin page 
+ * capabilities. 
  *
  * @since 1.0.0
  */
