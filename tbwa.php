@@ -49,6 +49,7 @@ function themeblvd_sidebars_init() {
 	
 	// General actions and filters
 	add_action( 'init', 'themeblvd_sidebars_register_post_type' );
+	add_action( 'after_setup_theme', 'themeblvd_register_custom_sidebars', 1001 ); // Hooked directly after theme framework's sidebar registration
 	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id' );
 	
 	// Admin files, actions, and filters
@@ -121,6 +122,40 @@ function themeblvd_sidebars_register_post_type(){
 		'can_export'		=> true
 	);
 	register_post_type( 'tb_sidebar', $args );
+}
+
+/**
+ * Register custom sidebars.
+ *
+ * @since 1.0.0
+ */
+
+function themeblvd_register_custom_sidebars() {
+
+	// Get custom sidebars
+	$custom_sidebars = get_posts( 'post_type=tb_sidebar&numberposts=-1&orderby=title&order=ASC' );
+	
+	// Register custom sidebars
+	foreach( $custom_sidebars as $sidebar ) {
+		
+		// Setup arguments for register_sidebar()
+		$args = array(
+			'name' 			=> __( 'Custom', 'themeblvd' ).': '.$sidebar->post_title,
+		    'id' 			=> $sidebar->post_name,
+		    'before_widget' => '<aside id="%1$s" class="widget %2$s"><div class="widget-inner">',
+			'after_widget' 	=> '</div></aside>',
+			'before_title' 	=> '<h3 class="widget-title">',
+			'after_title' 	=> '</h3>'
+		);
+		$location = get_post_meta( $sidebar->ID, 'location', true );
+		if( $location && $location != 'floating' )
+			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'themeblvd' ), themeblvd_get_sidebar_location_name( $location ) );
+		else
+			$args['description'] = __( 'This is a custom floating widget area.', 'themeblvd' );
+		
+		// Register the sidebar
+		register_sidebar( $args );
+	}
 }
 
 /**
