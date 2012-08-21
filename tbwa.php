@@ -140,7 +140,7 @@ function themeblvd_register_custom_sidebars() {
 		
 		// Setup arguments for register_sidebar()
 		$args = array(
-			'name' 			=> __( 'Custom', 'themeblvd' ).': '.$sidebar->post_title,
+			'name' 			=> __( 'Custom', 'tbwa' ).': '.$sidebar->post_title,
 		    'id' 			=> $sidebar->post_name,
 		    'before_widget' => '<aside id="%1$s" class="widget %2$s"><div class="widget-inner">',
 			'after_widget' 	=> '</div></aside>',
@@ -149,9 +149,9 @@ function themeblvd_register_custom_sidebars() {
 		);
 		$location = get_post_meta( $sidebar->ID, 'location', true );
 		if( $location && $location != 'floating' )
-			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'themeblvd' ), themeblvd_get_sidebar_location_name( $location ) );
+			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'tbwa' ), themeblvd_get_sidebar_location_name( $location ) );
 		else
-			$args['description'] = __( 'This is a custom floating widget area.', 'themeblvd' );
+			$args['description'] = __( 'This is a custom floating widget area.', 'tbwa' );
 		
 		// Register the sidebar
 		register_sidebar( $args );
