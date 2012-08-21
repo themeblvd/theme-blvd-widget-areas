@@ -184,7 +184,7 @@ function themeblvd_get_sidebar_id( $sidebar_id ) {
 	// formatted for the themeblvd_get_assigned_id function
 	$custom_sidebars = get_posts( $args );
 	if( $custom_sidebars ) {
-    	foreach( $custom_sidebars as $sidebar ) {
+		foreach( $custom_sidebars as $sidebar ) {
 			$current_assignments = get_post_meta( $sidebar->ID, 'assignments', true );
 			if( is_array( $current_assignments ) && ! empty ( $current_assignments ) ) {
     			foreach( $current_assignments as $key => $value ) {
