@@ -7,7 +7,7 @@
 
 function themeblvd_sidebar_admin_add_page() {
 	
-	$title = __( 'Widget Areas', 'tbwa' );
+	$title = __( 'Widget Areas', 'themeblvd_sidebars' );
 	$admin_page = add_theme_page( $title, $title, themeblvd_admin_module_cap( 'sidebars' ), 'themeblvd_widget_areas', 'themeblvd_sidebar_admin_page' );
 	
 	// Adds actions to hook in the required css and javascript
@@ -78,7 +78,7 @@ function themeblvd_sidebar_admin_load_styles() {
 function themeblvd_sidebar_admin_load_scripts() {
 	wp_enqueue_script( 'jquery-ui-sortable');
 	wp_enqueue_script( 'sharedframework-scripts', THEMEBLVD_ADMIN_ASSETS_URI . '/js/shared.js', array('jquery'), TB_FRAMEWORK_VERSION );
-	wp_enqueue_script( 'sidebarsframework-scripts', TB_WA_PLUGIN_URL . '/admin/js/sidebars.js', array('jquery'), TB_WA_PLUGIN_VERSION );
+	wp_enqueue_script( 'sidebarsframework-scripts', TB_SIDEBARS_PLUGIN_URL . '/admin/js/sidebars.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 	wp_localize_script( 'sharedframework-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 }
 
@@ -93,7 +93,7 @@ function themeblvd_widgets_admin_page() {
 	// we'd have to enqueue an entire stylesheet just for the widgets 
 	// page of the admin panel.
 	echo '<div style="width:300px;float:right;position:relative;z-index:1000"><p class="description" style="padding-left:5px">';
-	_e( 'In the <a href="themes.php?page=themeblvd_widget_areas">Widget Area Manager</a>, you can create and manage widget areas for specific pages of your website to override the default locations you see below.', 'tbwa');
+	_e( 'In the <a href="themes.php?page=themeblvd_widget_areas">Widget Area Manager</a>, you can create and manage widget areas for specific pages of your website to override the default locations you see below.', 'themeblvd_sidebars');
 	echo '</p></div>';
 }	
 
@@ -113,9 +113,9 @@ function themeblvd_sidebar_admin_page() {
 		    </div>
 		    <?php screen_icon( 'themes' ); ?>
 		    <h2 class="nav-tab-wrapper">
-		        <a href="#manage_sidebars" id="manage_sidebars-tab" class="nav-tab" title="<?php _e( 'Custom Widget Areas', 'tbwa' ); ?>"><?php _e( 'Custom Widget Areas', 'tbwa' ); ?></a>
-		        <a href="#add_sidebar" id="add_sidebar-tab" class="nav-tab" title="<?php _e( 'Add New', 'tbwa' ); ?>"><?php _e( 'Add New', 'tbwa' ); ?></a>
-		        <a href="#edit_sidebar" id="edit_sidebar-tab" class="nav-tab nav-edit-sidebar" title="<?php _e( 'Edit', 'tbwa' ); ?>"><?php _e( 'Edit', 'tbwa' ); ?></a>
+		        <a href="#manage_sidebars" id="manage_sidebars-tab" class="nav-tab" title="<?php _e( 'Custom Widget Areas', 'themeblvd_sidebars' ); ?>"><?php _e( 'Custom Widget Areas', 'themeblvd_sidebars' ); ?></a>
+		        <a href="#add_sidebar" id="add_sidebar-tab" class="nav-tab" title="<?php _e( 'Add New', 'themeblvd_sidebars' ); ?>"><?php _e( 'Add New', 'themeblvd_sidebars' ); ?></a>
+		        <a href="#edit_sidebar" id="edit_sidebar-tab" class="nav-tab nav-edit-sidebar" title="<?php _e( 'Edit', 'themeblvd_sidebars' ); ?>"><?php _e( 'Edit', 'themeblvd_sidebars' ); ?></a>
 		    </h2>
 		    
 			<!-- MANAGE SIDEBARS (start) -->

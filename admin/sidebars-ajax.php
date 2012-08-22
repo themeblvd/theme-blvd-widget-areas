@@ -169,7 +169,7 @@ function themeblvd_ajax_delete_sidebar() {
 				
 		// Respond with update message and management table
 		echo '<div id="setting-error-delete_sidebar" class="updated fade settings-error ajax-update">';
-		echo '	<p><strong>'.__( 'Sidebar(s) deleted.', 'tbwa' ).'</strong></p>';
+		echo '	<p><strong>'.__( 'Sidebar(s) deleted.', 'themeblvd_sidebars' ).'</strong></p>';
 		echo '</div>';
 		echo '[(=>)]';
 		themeblvd_manage_sidebars();

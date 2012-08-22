@@ -26,9 +26,9 @@ License: GPL2
 
 */
 
-define( 'TB_WA_PLUGIN_VERSION', '1.0.0' );
-define( 'TB_WA_PLUGIN_DIR', dirname( __FILE__ ) ); 
-define( 'TB_WA_PLUGIN_URL', plugins_url( '' , __FILE__ ) );
+define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.0.0' );
+define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) ); 
+define( 'TB_SIDEBARS_PLUGIN_URL', plugins_url( '' , __FILE__ ) );
 
 /**
  * Run Widget Area Manager
@@ -64,9 +64,9 @@ function themeblvd_sidebars_init() {
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
 			
 			// Include admin files
-			include_once( TB_WA_PLUGIN_DIR . '/admin/tbwa-admin.php' );
-			include_once( TB_WA_PLUGIN_DIR . '/admin/tbwa-ajax.php' );
-			include_once( TB_WA_PLUGIN_DIR . '/admin/tbwa-interface.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-admin.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-ajax.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-interface.php' );
 		
 			// Run admin items
 			add_action( 'admin_menu', 'themeblvd_sidebar_admin_add_page' );
@@ -86,7 +86,7 @@ add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
  */
 
 function themeblvd_sidebars_textdomain() {
-	load_plugin_textdomain( 'tbwa', false, TB_WA_PLUGIN_DIR . '/lang' );
+	load_plugin_textdomain( 'themeblvd_sidebars', false, TB_SIDEBARS_PLUGIN_DIR . '/lang' );
 }
 add_action( 'plugins_loaded', 'themeblvd_sidebars_textdomain' );
 
@@ -99,8 +99,8 @@ add_action( 'plugins_loaded', 'themeblvd_sidebars_textdomain' );
  */
 
 function themeblvd_sidebars_warning() {
-	echo '<div class="error">';
-	echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'tbwa' ).'</p>';
+	echo '<div class="updated">';
+	echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
 	echo '</div>';
 }
 
@@ -144,7 +144,7 @@ function themeblvd_register_custom_sidebars() {
 		
 		// Setup arguments for register_sidebar()
 		$args = array(
-			'name' 			=> __( 'Custom', 'tbwa' ).': '.$sidebar->post_title,
+			'name' 			=> __( 'Custom', 'themeblvd_sidebars' ).': '.$sidebar->post_title,
 		    'id' 			=> $sidebar->post_name,
 		    'before_widget' => '<aside id="%1$s" class="widget %2$s"><div class="widget-inner">',
 			'after_widget' 	=> '</div></aside>',
@@ -153,9 +153,9 @@ function themeblvd_register_custom_sidebars() {
 		);
 		$location = get_post_meta( $sidebar->ID, 'location', true );
 		if( $location && $location != 'floating' )
-			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'tbwa' ), themeblvd_get_sidebar_location_name( $location ) );
+			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'themeblvd_sidebars' ), themeblvd_get_sidebar_location_name( $location ) );
 		else
-			$args['description'] = __( 'This is a custom floating widget area.', 'tbwa' );
+			$args['description'] = __( 'This is a custom floating widget area.', 'themeblvd_sidebars' );
 		
 		// Register the sidebar
 		register_sidebar( $args );
