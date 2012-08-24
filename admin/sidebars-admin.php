@@ -168,7 +168,7 @@ function themeblvd_sidebar_admin_page() {
 				<?php do_action( 'themeblvd_admin_module_footer', 'sidebars' ); ?>
 			</div>
 			
-		</div> <!-- #optionsframework (end) -->
+		</div><!-- #optionsframework (end) -->
 	</div><!-- #sidebar_blvd (end) -->
 	<?php
 }

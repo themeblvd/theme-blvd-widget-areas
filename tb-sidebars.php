@@ -105,7 +105,7 @@ function themeblvd_sidebars_warning() {
 }
 
 /**
- * Regiter "tb_sidebar" custom post type. This post 
+ * Register "tb_sidebar" custom post type. This post 
  * type is how the framework internally manages sidebars. 
  * Each post is a custom sidebar. These can be 
  * imported/exported with WP's tools.

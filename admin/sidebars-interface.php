@@ -77,7 +77,7 @@ function themeblvd_add_sidebar() {
 	$options = apply_filters( 'themeblvd_add_sidebar', $options );
 	
 	// Build form
-	$form = optionsframework_fields( 'options', $options, null, false );
+	$form = themeblvd_option_fields( 'options', $options, null, false );
 	?>
 	<div class="metabox-holder">
 		<div class="postbox">
@@ -154,7 +154,7 @@ function themeblvd_edit_sidebar( $id ) {
 	);
 	
 	// Build form
-	$form = optionsframework_fields( 'options', $options, $settings, false );
+	$form = themeblvd_option_fields( 'options', $options, $settings, false );
 	?>
 	<div class="metabox-holder">
 		<div class="postbox">
