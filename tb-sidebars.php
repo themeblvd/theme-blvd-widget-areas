@@ -44,7 +44,9 @@ define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
  */
 
 function themeblvd_sidebars_init() {
-
+	
+	global $_themeblvd_sidebar_manager;
+	
 	// Check to make sure Theme Blvd Framework 2.2+ is running
 	if( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
 		add_action( 'admin_notices', 'themeblvd_sidebars_warning' );
@@ -54,27 +56,16 @@ function themeblvd_sidebars_init() {
 	// General actions and filters
 	add_action( 'init', 'themeblvd_sidebars_register_post_type' );
 	add_action( 'after_setup_theme', 'themeblvd_register_custom_sidebars', 1001 ); // Hooked directly after theme framework's sidebar registration
-	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id' );
+	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id' ); // This filter happens in the theme framework's themeblvd_frontend_init()
 	
 	// Admin files, actions, and filters
 	if( is_admin() ){
-		
 		// Check to make sure admin interface isn't set to be 
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
-			
-			// Include admin files
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-admin.php' );
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-ajax.php' );
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/sidebars-interface.php' );
-		
-			// Run admin items
-			add_action( 'admin_menu', 'themeblvd_sidebar_admin_add_page' );
-			add_action( 'admin_init', 'themeblvd_sidebar_admin_hijack_submenu' );
-			add_action( 'widgets_admin_page', 'themeblvd_widgets_admin_page' );
-			
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/tb-class-sidebar-manager.php' );
+			$_themeblvd_sidebar_manager = new Theme_Blvd_Sidebar_Manager();
 		}
-		
 	}
 }
 add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
