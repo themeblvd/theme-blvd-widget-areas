@@ -70,7 +70,6 @@ class Theme_Blvd_Sidebar_Manager {
 		// page of the admin panel.
 		echo '<div style="width:300px;float:right;position:relative;z-index:1000"><p class="description" style="padding-left:5px">';
 		printf( __( 'In the %s, you can create and manage widget areas for specific pages of your website to override the default locations you see below.', 'themeblvd_sidebars' ), '<a href="themes.php?page=themeblvd_widget_areas">'.__( 'Widget Area Manager', 'themeblvd_sidebars' ).'</a>' );
-		// ... _e( 'In the <a href="themes.php?page=themeblvd_widget_areas">Widget Area Manager</a>, you can create and manage widget areas for specific pages of your website to override the default locations you see below.', 'themeblvd_sidebars');
 		echo '</p></div>';
 	}	
 
