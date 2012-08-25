@@ -11,8 +11,6 @@ function themeblvd_sidebar_admin_add_page() {
 	$admin_page = add_theme_page( $title, $title, themeblvd_admin_module_cap( 'sidebars' ), 'themeblvd_widget_areas', 'themeblvd_sidebar_admin_page' );
 	
 	// Adds actions to hook in the required css and javascript
-	add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_load_styles' );
-	add_action( 'admin_print_scripts-'.$admin_page, 'optionsframework_load_scripts' );
 	add_action( 'admin_print_styles-'.$admin_page, 'themeblvd_sidebar_admin_load_styles' );
 	add_action( 'admin_print_scripts-'.$admin_page, 'themeblvd_sidebar_admin_load_scripts' );
 	add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_mlu_css', 0 );
@@ -66,7 +64,8 @@ function themeblvd_sidebar_admin_hijack_submenu() {
  */
 
 function themeblvd_sidebar_admin_load_styles() {
-	wp_enqueue_style( 'sharedframework-style', THEMEBLVD_ADMIN_ASSETS_URI . '/css/admin-style.css', null, TB_FRAMEWORK_VERSION );
+	wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.css', null, TB_FRAMEWORK_VERSION );
+	wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.css', null, TB_FRAMEWORK_VERSION );
 }	
 
 /**
@@ -76,10 +75,11 @@ function themeblvd_sidebar_admin_load_styles() {
  */
 
 function themeblvd_sidebar_admin_load_scripts() {
-	wp_enqueue_script( 'jquery-ui-sortable');
-	wp_enqueue_script( 'sharedframework-scripts', THEMEBLVD_ADMIN_ASSETS_URI . '/js/shared.js', array('jquery'), TB_FRAMEWORK_VERSION );
-	wp_enqueue_script( 'sidebarsframework-scripts', TB_SIDEBARS_PLUGIN_URL . '/admin/js/sidebars.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
-	wp_localize_script( 'sharedframework-scripts', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
+	wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.js', array('jquery'), TB_FRAMEWORK_VERSION );
+	wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
+	wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.js', array('jquery'), TB_FRAMEWORK_VERSION );
+	wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/js/sidebars.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
+	wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 }
 
 /**

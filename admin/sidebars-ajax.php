@@ -48,8 +48,8 @@ function themeblvd_ajax_add_sidebar() {
 	// Setup assignments
 	$assignments = array();
 	$name = null;
-	if( isset( $config['options']['sidebar_assignments'] ) && has_filter( 'of_sanitize_conditionals' ) ) {
-		$assignments = apply_filters( 'of_sanitize_conditionals', $config['options']['sidebar_assignments'], $post_slug, $post_id );
+	if( isset( $config['options']['sidebar_assignments'] ) && has_filter( 'themeblvd_sanitize_conditionals' ) ) {
+		$assignments = apply_filters( 'themeblvd_sanitize_conditionals', $config['options']['sidebar_assignments'], $post_slug, $post_id );
 	}
 	
 	// Update even if they're empty
@@ -103,8 +103,8 @@ function themeblvd_ajax_save_sidebar() {
 	// Setup assignments
 	$assignments = array();
 	$name = null;
-	if( isset( $config['options']['sidebar_assignments'] ) && has_filter( 'of_sanitize_conditionals' ) ) {
-		$assignments = apply_filters( 'of_sanitize_conditionals', $config['options']['sidebar_assignments'], $post_slug, $post_id );
+	if( isset( $config['options']['sidebar_assignments'] ) && has_filter( 'themeblvd_sanitize_conditionals' ) ) {
+		$assignments = apply_filters( 'themeblvd_sanitize_conditionals', $config['options']['sidebar_assignments'], $post_slug, $post_id );
 	}
 	
 	// Update even if they're empty

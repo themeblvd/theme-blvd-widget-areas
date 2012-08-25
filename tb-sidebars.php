@@ -28,7 +28,7 @@ License: GPL2
 
 define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.0.0' );
 define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) ); 
-define( 'TB_SIDEBARS_PLUGIN_URL', plugins_url( '' , __FILE__ ) );
+define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
 /**
  * Run Widget Area Manager
