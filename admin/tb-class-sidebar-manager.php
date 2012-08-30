@@ -42,8 +42,8 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function load_styles() {
-		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.css', null, TB_FRAMEWORK_VERSION );
-		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.css', null, TB_FRAMEWORK_VERSION );
+		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
+		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 	}	
 	
 	/**
@@ -52,10 +52,10 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function load_scripts() {
-		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.js', array('jquery'), TB_FRAMEWORK_VERSION );
+		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
-		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/js/sidebars.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
+		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
+		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 		wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 	}
 	
