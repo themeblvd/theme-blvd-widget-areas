@@ -17,7 +17,7 @@ class Theme_Blvd_Sidebar_Manager {
 		add_action( 'widgets_admin_page', array( $this, 'widgets_page' ) );
 		
 		// Add ajax functionality to sidebar admin page
-		include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/tb-class-sidebar-ajax.php' );
+		include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/class-tb-sidebar-ajax.php' );
 		$ajax = new Theme_Blvd_Sidebar_Ajax( $this );	
 
 	}
