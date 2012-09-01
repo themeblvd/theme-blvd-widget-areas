@@ -63,7 +63,7 @@ function themeblvd_sidebars_init() {
 		// Check to make sure admin interface isn't set to be 
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/tb-class-sidebar-manager.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/class-tb-sidebar-manager.php' );
 			$_themeblvd_sidebar_manager = new Theme_Blvd_Sidebar_Manager();
 		}
 	}
@@ -178,12 +178,18 @@ function themeblvd_get_sidebar_id( $sidebar_id ) {
 	// And now create a single array of just their assignments 
 	// formatted for the themeblvd_get_assigned_id function
 	$custom_sidebars = get_posts( $args );
+	$custom_counter = 1;
 	if( $custom_sidebars ) {
 		foreach( $custom_sidebars as $sidebar ) {
 			$current_assignments = get_post_meta( $sidebar->ID, 'assignments', true );
 			if( is_array( $current_assignments ) && ! empty ( $current_assignments ) ) {
     			foreach( $current_assignments as $key => $value ) {
-    				$assignments[$key] = $value;
+    				if( $key == 'custom' ) {
+    					$assignments[$key.'_'.$custom_counter] = $value;
+    					$custom_counter++;
+    				} else {
+    					$assignments[$key] = $value;	
+    				}
     			}
     		}
     	}
