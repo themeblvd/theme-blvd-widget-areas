@@ -19,6 +19,10 @@ class Theme_Blvd_Sidebar_Manager {
 		// Add ajax functionality to sidebar admin page
 		include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/class-tb-sidebar-ajax.php' );
 		$ajax = new Theme_Blvd_Sidebar_Ajax( $this );	
+		
+		// Add meta box
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
+		add_action( 'save_post', array( $this, 'save_meta_box' ) );
 
 	}
 	
@@ -35,6 +39,71 @@ class Theme_Blvd_Sidebar_Manager {
 		add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_mlu_css', 0 );
 		add_action( 'admin_print_scripts-'.$admin_page, 'optionsframework_mlu_js', 0 );	
 	}
+	
+	/**
+	 * Add a meta box for editing/adding layout.
+	 *
+	 * @since 1.1.0 
+	 */
+	function add_meta_box() {
+	
+		global $pagenow;
+		global $typenow;
+			
+		$args = apply_filters( 'themeblvd_sidebar_meta_box', array(
+			'id' 		=> 'tb_sidebars',
+			'name'		=> __('Sidebar Overrides', 'themeblvd_sidebars'),
+			'callback'	=> array( $this, 'meta_box' ),
+			'post_type'	=> array( 'page', 'post' ),
+			'context'	=> 'normal',
+			'priority'	=> 'default'
+		));
+		
+		if( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
+			// Include assets
+			foreach( $args['post_type'] as $post_type ){
+				// Include assets
+				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
+					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
+					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
+					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+				}
+				// Add meta box
+				add_meta_box( $args['id'], $args['name'], $args['callback'], $post_type, $args['context'], $args['priority'] );		
+			}
+		}
+	}
+	
+	/**
+	 * Save metabox for editing layouts from Edit Page screen.
+	 *
+	 * @since 1.1.0 
+	 */
+	function save_meta_box( $post_id ) {
+		
+		// Verify that this coming from the edit post page.
+		if( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' )
+			return;
+		
+		// Verfiy nonce
+		if( ! isset( $_POST['_tb_sidebar_overrides_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_sidebar_overrides_nonce'], 'themeblvd_sidebar_overrides' ) )
+			return;
+		
+		// Verify this is not an autosave
+		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+			return;
+		
+		// Save sidebar overrides meta
+		if( ! empty( $_POST['_tb_sidebars'] ) ){
+			$clean = array();
+			foreach( $_POST['_tb_sidebars'] as $key => $value ){
+				$clean[$key] = apply_filters( 'themeblvd_sanitize_text', $value );
+			}
+			update_post_meta( $post_id, '_tb_sidebars', $clean );
+		}
+		
+	}
 
 	/**
 	 * Loads the CSS 
@@ -42,9 +111,12 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function load_styles() {
+		global $pagenow;
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
-	}	
+		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' )
+			wp_enqueue_style( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
+	}
 	
 	/**
 	 * Loads the javascript 
@@ -55,7 +127,7 @@ class Theme_Blvd_Sidebar_Manager {
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
+		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 		wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 	}
 	
@@ -149,6 +221,59 @@ class Theme_Blvd_Sidebar_Manager {
 	}
 	
 	/**
+	 * Builds out the meta box to edit a page's custom layout.
+	 *
+	 * @since 1.1.0
+	 */
+	public function meta_box() {
+		?>
+		<div id="sidebar_blvd">
+			<div id="optionsframework">
+				
+				<!-- HEADER (start) -->
+				
+				<div class="meta-box-nav">
+					<div class="select-layout">
+						<div class="ajax-overlay"></div>
+						<div class="icon-holder">
+							<span class="tb-loader ajax-loading"></span>
+							<?php screen_icon( 'themes' ); ?>
+						</div>
+						<span class="note"><?php _e('Select any custom sidebars you\'d like applied to this page.', 'themeblvd_sidebars'); ?></span>
+					</div>
+					<ul>
+						<li><a href="#override_sidebars"><?php _e('Assign Overrides', 'themeblvd_sidebars'); ?></a></li>
+						<li><a href="#add_sidebar"><?php _e('Add Sidebar', 'themeblvd_sidebars'); ?></a></li>
+					</ul>
+					<div class="clear"></div>
+				</div><!-- .meta-box-nav (end) -->
+				
+				<!-- HEADER (end) -->
+				
+				<!-- ASSIGN OVERRIDES (start) -->
+				
+				<div id="override_sidebars" class="group">
+					<div class="ajax-mitt">
+						<?php $this->sidebar_overrides(); ?>
+					</div><!-- .ajax-mitt (end) -->
+				</div>
+				
+				<!-- ASSIGN OVERRIDES (end) -->
+				
+				<!-- ADD NEW (start) -->
+				
+				<div id="add_sidebar" class="group">
+					<?php $this->add_sidebar_mini(); ?>
+				</div><!-- #manage (end) -->
+				
+				<!-- ADD NEW (end) -->
+			    
+			</div><!-- #optionsframework (end) -->
+		</div><!-- #builder_blvd (end) -->
+		<?php
+	}
+	
+	/**
 	 * Hack the appearance submenu a to get "Widget Areas" to 
 	 * show up just below "Widgets"
 	 *
@@ -236,7 +361,7 @@ class Theme_Blvd_Sidebar_Manager {
 		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'themeblvd_sidebars' ) );
 		foreach( $sidebars as $sidebar )
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
-			
+
 		// Setup options array to display form
 		$options = array(
 			array( 
@@ -260,7 +385,7 @@ class Theme_Blvd_Sidebar_Manager {
 			)
 		);
 		$options = apply_filters( 'themeblvd_add_sidebar', $options );
-		
+
 		// Build form
 		$form = themeblvd_option_fields( 'options', $options, null, false );
 		?>
@@ -280,6 +405,30 @@ class Theme_Blvd_Sidebar_Manager {
 			</div><!-- .postbox (end) -->
 		</div><!-- .metabox-holder (end) -->
 		<?php
+	}
+	
+	/**
+	 * Generates the the interface to add a new slider when 
+	 * in the meta box interface.
+	 *
+	 * @since 1.1.0
+	 */
+	public function add_sidebar_mini() {
+		?>
+		<div class="section">
+			<div class="add-sidebar-items">
+				<?php $nonce = wp_create_nonce( 'themeblvd_new_sidebar' ); ?>
+				<input type="hidden" name="_tb_new_sidebar_nonce" value="<?php echo $nonce; ?>" />
+				<input type="text" name="_tb_new_sidebar_name" placeholder="<?php _e('New Sidebar Name', 'themeblvd_sidebars'); ?>" />
+				<a href="#" class="new-sidebar-submit button"><?php _e('Add Sidebar', 'themeblvd_sidebars'); ?></a>
+				<p class="explain"><?php _e('Enter a user-friendly name for your new sidebar and add it.', 'themeblvd_sidebars'); ?></p>
+			</div>
+		</div>
+		<div class="add-sidebar-note">
+			<p><?php _e('Note: Any sidebars you create here will initially be created as "floating" widget areas with no assignments. If you need to, you can edit these in the future from Appearance > Widget Areas.', 'themeblvd_sidebars'); ?></p>
+		</div>
+		<?php
+		
 	}
 
 	/**
@@ -355,6 +504,79 @@ class Theme_Blvd_Sidebar_Manager {
 			</div><!-- .postbox (end) -->
 		</div><!-- .metabox-holder (end) -->
 		<?php
+	}
+	
+	/**
+	 * Generates interface to manage sidebar overrides 
+	 * in meta box.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $settings Optional current selections for generated form
+	 */
+	public function sidebar_overrides( $settings = null ) {
+		global $post;
+		
+		// If the page is loading, we're going to be pulling 
+		// $settings from the meta data, but if this is being 
+		// sent from Ajax, we're most likely passing the 
+		// $settings in and we can skip this.
+		if( ! $settings )
+			$settings = get_post_meta( $post->ID, '_tb_sidebars', true );
+		
+		// For the meta box, if you want to show ALL widget 
+		// area locations, you'd change this to false. Most 
+		// people just want to use the fixed sidebars; so we 
+		// can save some clutter for the average person by 
+		// having this set to true.
+		$fixed_only = apply_filters( 'themeblvd_sidebar_overrides_fixed_only', true );
+		
+		// Construct <select> of ALL custom widget areas. --
+		// Because this is our override meta box, we don't care 
+		// about the "location" and the user can just override 
+		// with whatever custom widget area they want.
+		$custom_sidebars = get_posts('post_type=tb_sidebar&numberposts=-1');
+		$sidebars_select = array( 'default' => ' &#8211; '.__( 'No Override', 'themeblvd_sidebars' ).' &#8211; ');
+		foreach( $custom_sidebars as $sidebar ) {
+			$sidebars_select[$sidebar->post_name] = $sidebar->post_title;
+		}
+		
+		// Setup options for sidebar locations
+		$options = array(
+			array(
+				'type' 	=> 'info',
+				'desc' 	=> __( 'Here you can select any custom widget areas you\'d like applied to the sidebars of this specific page. When utilizing this feature, current locations and assignments of your custom widget areas setup under <a href="themes.php?page=themeblvd_widget_areas">Appearance > Widget Areas</a> will be ignored.', 'themeblvd_sidebars' ),
+				'class'	=> 'section-description'
+			)
+		);
+		$locations = themeblvd_get_sidebar_locations();
+		foreach( $locations as $location ) {
+			
+			// If we're only doing fixed sidebars and this 
+			// isn't a fixed sidebar, move onto the next location.
+			if( $fixed_only && $location['type'] != 'fixed' )
+				continue;
+
+			// Add option for this location
+			$options[] = array( 
+				'name' 		=> $location['location']['name'],
+				'desc' 		=> sprintf( __('Select from any of your custom widget areas to override the %s location on this page only.', 'themeblvd_sidebars'), $location['location']['name'] ),
+				'id' 		=> $location['location']['id'],
+				'type' 		=> 'select',
+				'options' 	=> $sidebars_select
+			);
+			
+		}
+		$options = apply_filters( 'themeblvd_sidebar_overrides', $options );
+
+		// Build form
+		$form = themeblvd_option_fields( '_tb_sidebars', $options, $settings, false );
+		
+		// And spit it out
+		$nonce = wp_create_nonce( 'themeblvd_sidebar_overrides' );
+		echo '<input type="hidden" name="_tb_sidebar_overrides_nonce" value="'.$nonce.'" />';
+		echo $form[0];
+		
 	}
 	
 }

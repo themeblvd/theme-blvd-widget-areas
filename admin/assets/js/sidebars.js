@@ -79,6 +79,94 @@ jQuery(document).ready(function($) {
 	}
 	
 	/*-----------------------------------------------------------------------------------*/
+	/* Meta Box (layout builder used when editing pages directly)
+	/*-----------------------------------------------------------------------------------*/
+
+	$('#tb_sidebars').each(function(){
+		
+		var meta_box = $(this);
+		
+		// Setup Tabs for Builder meta box
+		meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
+		meta_box.find('.group').hide();
+		meta_box.find('#override_sidebars').show();
+		meta_box.find('.meta-box-nav li a').click(function(){
+			var anchor = $(this), target = anchor.attr('href');
+			meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
+			anchor.addClass('nav-tab-active');
+			meta_box.find('.group').hide();
+			meta_box.find(target).show();
+			return false;
+		});
+		
+		// Setup new sidebar submit
+		meta_box.find('.new-sidebar-submit').click(function(){
+			
+			var el = $(this),
+				parent = el.closest('.add-sidebar-items'),
+				name = parent.find('input[name=_tb_new_sidebar_name]').val(),
+				nonce = parent.find('input[name=_tb_new_sidebar_nonce]').val(),
+				form_data = $('#post').serialize();
+			
+			// Tell user they forgot a name
+			if(!name)
+			{
+				tbc_confirm(themeblvd.no_name, {'textOk':'Ok'});
+			    return false;
+			}
+			
+			// Trigger loading indicators
+			meta_box.find('.meta-box-nav .ajax-overlay').css('visibility', 'visible').fadeIn('fast');
+			meta_box.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
+			meta_box.find('#override_sidebars').prepend('<div class="ajax-overlay-sidebars-switch"></div>');
+			meta_box.find('#override_sidebars .ajax-overlay-sidebars-switch').fadeIn('fast');
+						
+			// Prep and exececute first Ajax call.
+			var data = {
+				action: 'themeblvd_quick_add_sidebar',
+				security: nonce,
+				data: form_data
+			};
+			$.post(ajaxurl, data, function(response) {
+				
+				// Insert updated sidebar selects into meta box
+				meta_box.find('.ajax-mitt').html(response);
+				meta_box.find('.ajax-mitt').themeblvd('options', 'setup');
+				
+				// Wait 1 second before bringing everything back.
+				setTimeout(function () {
+		    		
+		    		// Switch user back to editing overrides
+					meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
+					meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
+					meta_box.find('.group').hide();
+					meta_box.find('#override_sidebars').show();
+					
+					// Disable loading indicaters
+					meta_box.find('.meta-box-nav .ajax-overlay').fadeOut('fast');
+					meta_box.find('.meta-box-nav .ajax-loading').fadeOut('fast');
+					meta_box.find('#override_sidebars .ajax-overlay-sidebars-switch').fadeOut('fast').remove();
+					
+					// Put user at the start of meta box
+					$('html,body').animate({
+						scrollTop: $('#tb_sidebars').offset().top - 30
+					}, 'fast');
+					
+					// Show success message
+					tbc_alert.init(themeblvd.sidebar_created, 'success', '#tb_sidebars');
+					
+					// Clear name field back on new layout form
+					meta_box.find('input[name="_tb_new_sidebar_name"]').val('');
+						
+				}, 1000);
+				
+			});
+			return false;
+		});
+		
+	});
+	
+	/*-----------------------------------------------------------------------------------*/
 	/* Manage Widget Areas Page
 	/*-----------------------------------------------------------------------------------*/
 	

@@ -21,6 +21,7 @@ class Theme_Blvd_Sidebar_Ajax {
 		
 		// Hook in Ajax funcition to WP
 		add_action( 'wp_ajax_themeblvd_add_sidebar', array( $this, 'add_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd_quick_add_sidebar', array( $this, 'quick_add_sidebar' ) );
 		add_action( 'wp_ajax_themeblvd_save_sidebar', array( $this, 'save_sidebar' ) );
 		add_action( 'wp_ajax_themeblvd_delete_sidebar', array( $this, 'delete_sidebar' ) );
 		add_action( 'wp_ajax_themeblvd_edit_sidebar', array( $this, 'edit_sidebar' ) );
@@ -85,6 +86,43 @@ class Theme_Blvd_Sidebar_Ajax {
 		
 		// Respond with mange sidebar page
 		$this->admin_page->manage_sidebars();
+		
+		die();
+	}
+	
+	/**
+	 * Add new sidebar from meta box on edit 
+	 * page/post screen.
+	 *
+	 * @since 1.1.0
+	 */
+	public function quick_add_sidebar() {
+		
+		// Make sure Satan isn't lurking
+		check_ajax_referer( 'themeblvd_new_sidebar', 'security' );
+		
+		// Handle data
+		parse_str( $_POST['data'], $data );
+		
+		// Setup arguments for new 'sidebar' post
+		$args = array(	
+			'post_type'			=> 'tb_sidebar', 
+			'post_title'		=> $data['_tb_new_sidebar_name'],
+			'post_status' 		=> 'publish',
+			'comment_status'	=> 'closed', 
+			'ping_status'		=> 'closed'
+		);
+		
+		// Create new sidebar post
+		$post_id = wp_insert_post( $args );
+		
+		// Establish post meta for new sidebar
+		update_post_meta( $post_id, 'location', null );
+		update_post_meta( $post_id, 'assignments', array() );
+		
+		// Respond with updated form items to 
+		// setup sidebar overrides.
+		$this->admin_page->sidebar_overrides( $data['_tb_sidebars'] );
 		
 		die();
 	}

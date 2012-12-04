@@ -3,7 +3,7 @@
 Plugin Name: Theme Blvd Widget Areas
 Plugin URI: 
 Description: This plugin works in conjuction with the Theme Blvd framework and its core addons to allow you to create custom widget areas and apply them in various ways.
-Version: 1.0.0
+Version: 1.1.0
 Author: Jason Bobich
 Author URI: http://jasonbobich.com
 License: GPL2
@@ -26,7 +26,7 @@ License: GPL2
 
 */
 
-define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.0.0' );
+define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.1.0' );
 define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) ); 
 define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
@@ -53,10 +53,20 @@ function themeblvd_sidebars_init() {
 		return;
 	}
 	
+	// If using framework v2.2.0, tell them they should now update to 2.2.1
+	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
+		add_action( 'admin_notices', 'themeblvd_sidebars_warning_2' );
+	}
+	
+	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
+	if( ! function_exists( 'themeblvd_disable_nag' ) ){
+		add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
+	}
+	
 	// General actions and filters
 	add_action( 'init', 'themeblvd_sidebars_register_post_type' );
 	add_action( 'after_setup_theme', 'themeblvd_register_custom_sidebars', 1001 ); // Hooked directly after theme framework's sidebar registration
-	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id' ); // This filter happens in the theme framework's themeblvd_frontend_init()
+	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id', 10, 3 ); // This filter happens in the theme framework's themeblvd_frontend_init()
 	
 	// Admin files, actions, and filters
 	if( is_admin() ){
@@ -82,6 +92,18 @@ function themeblvd_sidebars_textdomain() {
 add_action( 'plugins_loaded', 'themeblvd_sidebars_textdomain' );
 
 /**
+ * Disable a nag message.
+ *
+ * @since 1.1.0
+ */
+
+function themeblvd_sidebars_disable_nag() {
+	global $current_user;
+    if ( isset( $_GET['tb_nag_ignore'] ) )
+         add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+}
+
+/**
  * Display warning telling the user they must have a 
  * theme with Theme Blvd framework v2.2+ installed in 
  * order to run this plugin.
@@ -93,6 +115,23 @@ function themeblvd_sidebars_warning() {
 	echo '<div class="updated">';
 	echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
 	echo '</div>';
+}
+
+/**
+ * Display warning telling the user they should be using 
+ * theme with Theme Blvd framework v2.2.1+.
+ *
+ * @since 1.1.0
+ */
+
+function themeblvd_sidebars_warning_2() {
+	global $current_user;
+    if( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning_2' ) ) {
+        echo '<div class="updated">';
+        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_sidebars' ).'</p>';
+        echo '<p><a href="?tb_nag_ignore=tb_sidebars_warning_2">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a></p>';
+        echo '</div>';
+    }
 }
 
 /**
@@ -158,29 +197,37 @@ function themeblvd_register_custom_sidebars() {
  *
  * @since 1.0.0
  * 
- * @param string $sidebar_id Current sidebar ID to be filtered, will match the location id
+ * @param string $location_id Current sidebar ID to be filtered, will match the location id
+ * @param object $custom_sidebars All tb_sidebar custom posts
+ * @param array $sidebar_overrides Current _tb_sidebars meta data for page/post
  * @return string $sidebar_id The final sidebar ID, whether it's been changed or not
  */
 
-function themeblvd_get_sidebar_id( $sidebar_id ) {
+function themeblvd_get_sidebar_id( $location_id, $custom_sidebars, $sidebar_overrides ) {
+	
+	// Overrides come first
+	if( ! empty( $sidebar_overrides ) ) {
+		foreach( $sidebar_overrides as $key => $value ){
+			if( $key == $location_id && $value != 'default' ){
+				return $value;
+			}
+		}
+	}
 	
 	// Innitiate assignments
 	$assignments = array();
 	
-	// Get all the custom sidebars for this location
-	$args = array(
-		'post_type' 	=> 'tb_sidebar',
-		'numberposts' 	=> -1,
-		'meta_key' 		=> 'location',
-		'meta_value' 	=> $sidebar_id
-	);
-	
 	// And now create a single array of just their assignments 
 	// formatted for the themeblvd_get_assigned_id function
-	$custom_sidebars = get_posts( $args );
 	$custom_counter = 1;
-	if( $custom_sidebars ) {
+	if( ! empty( $custom_sidebars ) ) {
 		foreach( $custom_sidebars as $sidebar ) {
+			
+			// First, verify location
+			if( $location_id != get_post_meta( $sidebar->ID, 'location', true ) )
+				continue;
+			
+			// And now move onto assignments
 			$current_assignments = get_post_meta( $sidebar->ID, 'assignments', true );
 			if( is_array( $current_assignments ) && ! empty ( $current_assignments ) ) {
     			foreach( $current_assignments as $key => $value ) {
@@ -188,15 +235,16 @@ function themeblvd_get_sidebar_id( $sidebar_id ) {
     					$assignments[$key.'_'.$custom_counter] = $value;
     					$custom_counter++;
     				} else {
-    					$assignments[$key] = $value;	
+    					$assignments[$key] = $value;
     				}
     			}
     		}
+    		
     	}
     }
 	
 	// Return new sidebar ID
-	return themeblvd_get_assigned_id( $sidebar_id, $assignments );
+	return themeblvd_get_assigned_id( $location_id, $assignments );
 }
 
 /**
