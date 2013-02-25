@@ -1,0 +1,189 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Theme Blvd Widget Areas\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-24 15:31-1000\n"
+"PO-Revision-Date: 2013-02-24 15:32-1000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../tb-sidebars.php:116
+msgid "You currently have the \"Theme Blvd Widget Areas\" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything."
+msgstr ""
+
+#: ../tb-sidebars.php:131
+msgid "You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+."
+msgstr ""
+
+#: ../tb-sidebars.php:132
+msgid "Dismiss this notice"
+msgstr ""
+
+#: ../tb-sidebars.php:177
+msgid "Custom"
+msgstr ""
+
+#: ../tb-sidebars.php:186
+#, php-format
+msgid "This is a custom widget area to replace the %s on its assigned pages."
+msgstr ""
+
+#: ../tb-sidebars.php:188
+msgid "This is a custom floating widget area."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-ajax.php:201
+msgid "Widget Area saved."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-ajax.php:233
+msgid "Sidebar(s) deleted."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:35
+msgid "Widget Areas"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:55
+msgid "Sidebar Overrides"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:144
+#, php-format
+msgid "In the %s, you can create and manage widget areas for specific pages of your website to override the default locations you see below."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:144
+msgid "Widget Area Manager"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:163
+msgid "Custom Widget Areas"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:164
+msgid "Add New"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:165
+msgid "Edit"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:242
+msgid "Select any custom sidebars you'd like applied to this page."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:245
+msgid "Assign Overrides"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:246
+#: ../admin/class-tb-sidebar-manager.php:423
+msgid "Add Sidebar"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:324
+msgid "Widget Area Title"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:328
+msgid "ID"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:338
+msgid "Location"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:342
+msgid "Assignments"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:361
+#: ../admin/class-tb-sidebar-manager.php:447
+msgid "No Location (Floating Widget Area)"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:368
+#: ../admin/class-tb-sidebar-manager.php:454
+msgid "Widget Area Name"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:369
+msgid "Enter a user-friendly name for your widget area.<br><br><em>Example: My Sidebar</em>"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:374
+#: ../admin/class-tb-sidebar-manager.php:467
+msgid "Widget Area Location"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:375
+#: ../admin/class-tb-sidebar-manager.php:468
+msgid "Select which location on the site this widget area will be among the theme's currently supported widget area locations.<br><br><em>Note: A \"Floating Widget Area\" can be used in dynamic elements like setting up columns in the layout builder, for example.</em>"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:381
+#: ../admin/class-tb-sidebar-manager.php:474
+msgid "Widget Area Assignments"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:382
+msgid "Select the places on your site you'd like this custom widget area to show in the location you picked previously.<br><br><em>Note: You can edit the location you selected previously and these assignments later if you change your mind.</em><br><br><em>Note: Assignments will be ignored on \"Floating Widget Areas\" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:394
+#: ../admin/class-tb-sidebar-manager.php:400
+msgid "Add New Widget Area"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:422
+msgid "New Sidebar Name"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:424
+msgid "Enter a user-friendly name for your new sidebar and add it."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:428
+msgid "Note: Any sidebars you create here will initially be created as \"floating\" widget areas with no assignments. If you need to, you can edit these in the future from Appearance > Widget Areas."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:455
+msgid "Here you can edit the name of your widget area. This will adjust how your widget area is labeled for you here in the WordPress admin panel."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:460
+msgid "Widget Area ID"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:461
+msgid "Here you can edit the internal ID of your widget area.<br><br><em>Warning: This is how WordPress assigns your widgets and how the theme applies your widget area. If you change this ID, you will need to re-assign any widgets under Appearance > Widgets, and re-visit any areas you may have added this as a floating widget area.</em>"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:475
+msgid "Select the places on your site you'd like this custom widget area to show in the location you picked previously.<br><br><em>Note: Assignments will be ignored on \"Floating Widget Areas\" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:500
+msgid "Save Widget Area"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:539
+msgid "No Override"
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:548
+msgid "Here you can select any custom widget areas you'd like applied to the sidebars of this specific page. When utilizing this feature, current locations and assignments of your custom widget areas setup under <a href=\"themes.php?page=themeblvd_widget_areas\">Appearance > Widget Areas</a> will be ignored."
+msgstr ""
+
+#: ../admin/class-tb-sidebar-manager.php:563
+#, php-format
+msgid "Select from any of your custom widget areas to override the %s location on this page only."
+msgstr ""
+
