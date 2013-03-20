@@ -153,7 +153,7 @@ class Theme_Blvd_Sidebar_Manager {
 	public function admin_page() {
 		?>
 		<div id="sidebar_blvd">
-			<div id="optionsframework" class="wrap">
+			<div id="optionsframework" class="wrap tb-options-js">
 			    
 			    <div class="admin-module-header">
 			    	<?php do_action( 'themeblvd_admin_module_header', 'sidebars' ); ?>
@@ -228,7 +228,7 @@ class Theme_Blvd_Sidebar_Manager {
 	public function meta_box() {
 		?>
 		<div id="sidebar_blvd">
-			<div id="optionsframework">
+			<div id="optionsframework" class="tb-options-js">
 				
 				<!-- HEADER (start) -->
 				
