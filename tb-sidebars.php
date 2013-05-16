@@ -3,7 +3,7 @@
 Plugin Name: Theme Blvd Widget Areas
 Plugin URI: 
 Description: This plugin works in conjuction with the Theme Blvd framework and its core addons to allow you to create custom widget areas and apply them in various ways.
-Version: 1.1.0
+Version: 1.1.1
 Author: Jason Bobich
 Author URI: http://jasonbobich.com
 License: GPL2
