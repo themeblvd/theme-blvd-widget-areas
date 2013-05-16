@@ -4,7 +4,7 @@ Contributors: themeblvd
 Tags: custom sidebars, sidebar, sidebars, widget, widgets, widget areas, unlimited sidebars, Theme Blvd, themeblvd, Jason Bobich
 Stable Tag: 1.1.1
 
-When using a Theme Blvd theme, this plugin gives extends the framework's widget area system to give you the classic "Unlimited Sidebars" feature.
+When using a Theme Blvd theme, this plugin extends the framework's widget area system.
 
 == Description ==
 
