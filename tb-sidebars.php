@@ -187,6 +187,9 @@ function themeblvd_register_custom_sidebars() {
 		else
 			$args['description'] = __( 'This is a custom floating widget area.', 'themeblvd_sidebars' );
 		
+		// Extend
+		$args = apply_filters( 'themeblvd_custom_sidebar_args', $args, $sidebar, $location );
+
 		// Register the sidebar
 		register_sidebar( $args );
 	}

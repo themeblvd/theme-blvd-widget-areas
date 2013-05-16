@@ -36,6 +36,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.1.1 =
 
+* Added `themeblvd_custom_sidebar_args` filter.
+
 = 1.1.0 =
 
 * Added "Sidebar Overrides" meta box so custom sidebars can be applied
