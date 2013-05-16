@@ -59,7 +59,7 @@ function themeblvd_sidebars_init() {
 	}
 	
 	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
-	if( ! function_exists( 'themeblvd_disable_nag' ) ){
+	if( ! function_exists( 'themeblvd_disable_nag' ) ) {
 		add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
 	}
 	
@@ -112,9 +112,13 @@ function themeblvd_sidebars_disable_nag() {
  */
 
 function themeblvd_sidebars_warning() {
-	echo '<div class="updated">';
-	echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
-	echo '</div>';
+	global $current_user;
+	if( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning' ) ) {
+		echo '<div class="updated">';
+		echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
+		echo '<p><a href="?tb_nag_ignore=tb_sidebars_warning">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_sidebars').'</a></p>';
+		echo '</div>';
+	}
 }
 
 /**
