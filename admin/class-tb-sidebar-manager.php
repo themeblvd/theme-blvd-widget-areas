@@ -16,6 +16,10 @@ class Theme_Blvd_Sidebar_Manager {
 		add_action( 'admin_init', array( $this, 'hijack_submenu' ) );
 		add_action( 'widgets_admin_page', array( $this, 'widgets_page' ) );
 		
+		// Filter on javascript locals specifically for Widget Areas Manager 
+		// onto Theme Blvd framework locals.
+		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
+
 		// Add ajax functionality to sidebar admin page
 		include_once( TB_SIDEBARS_PLUGIN_DIR . '/admin/class-tb-sidebar-ajax.php' );
 		$ajax = new Theme_Blvd_Sidebar_Ajax( $this );	
@@ -111,11 +115,15 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function load_styles() {
+		
 		global $pagenow;
+		
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
-		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' )
+		
+		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
 			wp_enqueue_style( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
+		}
 	}
 	
 	/**
@@ -124,11 +132,35 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function load_scripts() {
+		
+		global $pagenow;
+
+		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_localize_script( 'themeblvd_admin', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
-		wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
+		
+		// Add JS locals. Not needed for Edit Page screen, already exists.
+		if( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
+			wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+		}
+
+	}
+
+	/**
+	 * Add javascript locals for Widget Areas manager onto 
+	 * framework js locals that are already established.
+	 *
+	 * @since 1.1.2
+	 */
+	public function add_js_locals( $current ) {
+		$new = array(
+			'edit_sidebar'			=> __( 'Edit', 'themeblvd_sidebars' ),
+			'delete_sidebar'		=> __( 'Are you sure you want to delete the widget area(s)?', 'themeblvd_sidebars' ),
+			'sidebar_created'		=> __( 'Widget Area created!', 'themeblvd_sidebars' ),
+			'sidebar_layout_set'	=> __( 'With how you\'ve selected to start your layout, there is already a sidebar layout applied initially.', 'themeblvd_sidebars' )
+		);
+		return array_merge($current, $new);
 	}
 	
 	/**
