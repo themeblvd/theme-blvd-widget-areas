@@ -213,7 +213,7 @@ function themeblvd_register_custom_sidebars() {
 function themeblvd_get_sidebar_id( $location_id, $custom_sidebars, $sidebar_overrides ) {
 	
 	// Overrides come first
-	if( ! empty( $sidebar_overrides ) ) {
+	if( ! empty( $sidebar_overrides ) && is_array( $sidebar_overrides ) ) {
 		foreach( $sidebar_overrides as $key => $value ){
 			if( $key == $location_id && $value != 'default' ){
 				return $value;

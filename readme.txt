@@ -37,6 +37,7 @@ Custom widget areas have two attributes to understand when being setup.
 = 1.1.2 =
 
 * Some minor admin javascript improvements.
+* Added fix for rare PHP warning resulting from `_tb_sidebars` meta not being saved properly.
 
 = 1.1.1 =
 
