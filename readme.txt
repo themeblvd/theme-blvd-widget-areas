@@ -38,6 +38,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 * Some minor admin javascript improvements.
 * Added fix for rare PHP warning resulting from `_tb_sidebars` meta not being saved properly.
+* Added `themeblvd_sidebars_post_type_args` filter on registered `tb_sidebar` post type's `$args`.
 
 = 1.1.1 =
 

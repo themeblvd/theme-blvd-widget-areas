@@ -148,7 +148,7 @@ function themeblvd_sidebars_warning_2() {
  */
 
 function themeblvd_sidebars_register_post_type(){
-	$args = array(
+	$args = apply_filters( 'themeblvd_sidebars_post_type_args', array(
 		'labels' 			=> array( 'name' => 'Widget Areas', 'singular_name' => 'Widget Area' ),
 		'public'			=> false,
 		//'show_ui' 		=> true,	// Can uncomment for debugging
@@ -158,7 +158,7 @@ function themeblvd_sidebars_register_post_type(){
 		'rewrite' 			=> false,
 		'supports' 			=> array( 'title', 'custom-fields' ), 
 		'can_export'		=> true
-	);
+	));
 	register_post_type( 'tb_sidebar', $args );
 }
 
