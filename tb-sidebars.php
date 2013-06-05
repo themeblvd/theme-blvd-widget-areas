@@ -104,6 +104,26 @@ function themeblvd_sidebars_disable_nag() {
 }
 
 /**
+ * Disable a nag message URL.
+ *
+ * @since 1.1.3
+ */
+
+function themeblvd_sidebars_disable_url( $id ) {
+
+	global $pagenow;
+
+	$url = admin_url( $pagenow );
+
+	if( $_SERVER['QUERY_STRING'] )
+		$url .= sprintf( '?%s&tb_nag_ignore=%s', $_SERVER['QUERY_STRING'], $id );
+	else
+		$url .= sprintf( '?tb_nag_ignore=%s', $id );
+
+	return $url;
+}
+
+/**
  * Display warning telling the user they must have a 
  * theme with Theme Blvd framework v2.2+ installed in 
  * order to run this plugin.
@@ -116,7 +136,7 @@ function themeblvd_sidebars_warning() {
 	if( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning' ) ) {
 		echo '<div class="updated">';
 		echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
-		echo '<p><a href="?tb_nag_ignore=tb_sidebars_warning">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_sidebars').'</a></p>';
+		echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning').'">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_sidebars').'</a></p>';
 		echo '</div>';
 	}
 }
@@ -133,7 +153,7 @@ function themeblvd_sidebars_warning_2() {
     if( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning_2' ) ) {
         echo '<div class="updated">';
         echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_sidebars' ).'</p>';
-        echo '<p><a href="?tb_nag_ignore=tb_sidebars_warning_2">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a></p>';
+        echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning_2').'">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a></p>';
         echo '</div>';
     }
 }

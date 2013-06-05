@@ -36,6 +36,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.1.3 =
 
+* Fixed "Dismiss" link not working for notices on some admin pages.
+
 = 1.1.2 =
 
 * Some minor admin javascript improvements.
