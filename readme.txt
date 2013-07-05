@@ -37,6 +37,7 @@ Custom widget areas have two attributes to understand when being setup.
 = 1.1.3 =
 
 * Fixed "Dismiss" link not working for notices on some admin pages.
+* Fixed any conflicts when activated with [Theme Blvd Bundle](http://wordpress.org/extend/plugins/theme-blvd-bundle).
 
 = 1.1.2 =
 
