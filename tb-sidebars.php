@@ -25,16 +25,10 @@ License: GPL2
 
 */
 
-// Avoid potential conflicts on activation with Bundle.
-if ( !defined( 'TB_SIDEBARS_PLUGIN_VERSION' ) ) {
+define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.1.3' );
+define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) );
+define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
-	define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.1.3' );
-	define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) );
-	define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
-
-}
-
-if ( !function_exists( 'themeblvd_sidebars_init' ) ) : // Avoid activation errors with Bundle
 /**
  * Run Widget Area Manager
  *
@@ -86,9 +80,7 @@ function themeblvd_sidebars_init() {
 	}
 }
 add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
-endif;
 
-if ( !function_exists( 'themeblvd_sidebars_textdomain' ) ) : // Avoid activation errors with Bundle
 /**
  * Register text domain for localization.
  *
@@ -98,4 +90,3 @@ function themeblvd_sidebars_textdomain() {
 	load_plugin_textdomain( 'themeblvd_sidebars', false, TB_SIDEBARS_PLUGIN_DIR . '/lang' );
 }
 add_action( 'plugins_loaded', 'themeblvd_sidebars_textdomain' );
-endif;
