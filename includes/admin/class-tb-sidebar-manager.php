@@ -63,11 +63,11 @@ class Theme_Blvd_Sidebar_Manager {
 			'priority'	=> 'default'
 		));
 
-		if( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
+		if ( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
 			// Include assets
-			foreach( $args['post_type'] as $post_type ){
+			foreach ( $args['post_type'] as $post_type ){
 				// Include assets
-				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 					// @deprecated add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
@@ -87,21 +87,24 @@ class Theme_Blvd_Sidebar_Manager {
 	function save_meta_box( $post_id ) {
 
 		// Verify that this coming from the edit post page.
-		if( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' )
+		if ( ! isset( $_POST['action'] ) || $_POST['action'] != 'editpost' ) {
 			return;
+		}
 
 		// Verfiy nonce
-		if( ! isset( $_POST['_tb_sidebar_overrides_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_sidebar_overrides_nonce'], 'themeblvd_sidebar_overrides' ) )
+		if ( ! isset( $_POST['_tb_sidebar_overrides_nonce'] ) || ! wp_verify_nonce( $_POST['_tb_sidebar_overrides_nonce'], 'themeblvd_sidebar_overrides' ) ) {
 			return;
+		}
 
 		// Verify this is not an autosave
-		if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
+		}
 
 		// Save sidebar overrides meta
-		if( ! empty( $_POST['_tb_sidebars'] ) ){
+		if ( ! empty( $_POST['_tb_sidebars'] ) ){
 			$clean = array();
-			foreach( $_POST['_tb_sidebars'] as $key => $value ){
+			foreach ( $_POST['_tb_sidebars'] as $key => $value ){
 				$clean[$key] = apply_filters( 'themeblvd_sanitize_text', $value );
 			}
 			update_post_meta( $post_id, '_tb_sidebars', $clean );
@@ -121,7 +124,7 @@ class Theme_Blvd_Sidebar_Manager {
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 
-		if( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
+		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
 			wp_enqueue_style( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
 		}
 	}
@@ -141,7 +144,7 @@ class Theme_Blvd_Sidebar_Manager {
 		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 
 		// Add JS locals. Not needed for Edit Page screen, already exists.
-		if( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
+		if ( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
 			wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
 		}
 
@@ -316,25 +319,26 @@ class Theme_Blvd_Sidebar_Manager {
 		global $submenu;
 		$new_submenu = array();
 
-		if( ! empty( $submenu ) ) {
+		if ( ! empty( $submenu ) ) {
 
 			// Find the current "Widget Areas" array, copy it, and remove it.
-			foreach( $submenu['themes.php'] as $key => $value ) {
-				if( $value[2] == 'themeblvd_widget_areas' ) {
+			foreach ( $submenu['themes.php'] as $key => $value ) {
+				if ( $value[2] == 'themeblvd_widget_areas' ) {
 					$widget_areas = $value;
 					unset( $submenu['themes.php'][$key] );
 				}
 			}
 
 			// Reconstruct the new submenu
-			if( isset( $widget_areas ) ) {
-				foreach( $submenu['themes.php'] as $key => $value ) {
+			if ( isset( $widget_areas ) ) {
+				foreach ( $submenu['themes.php'] as $key => $value ) {
 					// Add original item to new menu
 					$new_submenu[$key] = $value;
 					// If this is the "Widgets" item, add in our
 					// "Widget Areas" item directly after.
-					if( $value[2] == 'widgets.php' )
+					if ( $value[2] == 'widgets.php' ) {
 						$new_submenu[] = $widget_areas;
+					}
 				}
 			}
 
@@ -391,7 +395,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// Setup sidebar layouts
 		$sidebars = themeblvd_get_sidebar_locations();
 		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'themeblvd_sidebars' ) );
-		foreach( $sidebars as $sidebar )
+		foreach ( $sidebars as $sidebar )
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
 
 		// Setup options array to display form
@@ -477,7 +481,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// Setup sidebar layouts
 		$sidebars = themeblvd_get_sidebar_locations();
 		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'themeblvd_sidebars' ) );
-		foreach( $sidebars as $sidebar )
+		foreach ( $sidebars as $sidebar )
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
 
 		// Setup options array to display form
@@ -553,8 +557,9 @@ class Theme_Blvd_Sidebar_Manager {
 		// $settings from the meta data, but if this is being
 		// sent from Ajax, we're most likely passing the
 		// $settings in and we can skip this.
-		if( ! $settings )
+		if ( ! $settings ) {
 			$settings = get_post_meta( $post->ID, '_tb_sidebars', true );
+		}
 
 		// For the meta box, if you want to show ALL widget
 		// area locations, you'd change this to false. Most
@@ -569,7 +574,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// with whatever custom widget area they want.
 		$custom_sidebars = get_posts('post_type=tb_sidebar&numberposts=-1');
 		$sidebars_select = array( 'default' => ' &#8211; '.__( 'No Override', 'themeblvd_sidebars' ).' &#8211; ');
-		foreach( $custom_sidebars as $sidebar ) {
+		foreach ( $custom_sidebars as $sidebar ) {
 			$sidebars_select[$sidebar->post_name] = $sidebar->post_title;
 		}
 
@@ -582,12 +587,13 @@ class Theme_Blvd_Sidebar_Manager {
 			)
 		);
 		$locations = themeblvd_get_sidebar_locations();
-		foreach( $locations as $location ) {
+		foreach ( $locations as $location ) {
 
 			// If we're only doing fixed sidebars and this
 			// isn't a fixed sidebar, move onto the next location.
-			if( $fixed_only && $location['type'] != 'fixed' )
+			if ( $fixed_only && $location['type'] != 'fixed' ) {
 				continue;
+			}
 
 			// Add option for this location
 			$options[] = array(
