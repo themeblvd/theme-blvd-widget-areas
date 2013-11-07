@@ -36,6 +36,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.1.5 =
 
+* Removed deprecated media uploader script.
+
 = 1.1.4 =
 
 * Admin jQuery improvements for 1.9 - Converted all .live() to .on()

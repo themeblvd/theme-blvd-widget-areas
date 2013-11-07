@@ -40,12 +40,12 @@ class Theme_Blvd_Sidebar_Manager {
 		$admin_page = add_theme_page( $title, $title, themeblvd_admin_module_cap( 'sidebars' ), 'themeblvd_widget_areas', array( $this, 'admin_page' ) );
 		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
 		add_action( 'admin_print_scripts-'.$admin_page, array( $this, 'load_scripts' ) );
-		add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_mlu_css', 0 );
-		add_action( 'admin_print_scripts-'.$admin_page, 'optionsframework_mlu_js', 0 );
+		// @deprecated add_action( 'admin_print_styles-'.$admin_page, 'optionsframework_mlu_css', 0 );
+		// @deprecated add_action( 'admin_print_scripts-'.$admin_page, 'optionsframework_mlu_js', 0 );
 	}
 
 	/**
-	 * Add a meta box for editing/adding layout.
+	 * Add a meta box for managing sidebar overrides.
 	 *
 	 * @since 1.1.0
 	 */
@@ -70,8 +70,8 @@ class Theme_Blvd_Sidebar_Manager {
 				if( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
-					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
-					add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
+					// @deprecated add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
+					// @deprecated add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
 				}
 				// Add meta box
 				add_meta_box( $args['id'], $args['name'], $args['callback'], $post_type, $args['context'], $args['priority'] );
