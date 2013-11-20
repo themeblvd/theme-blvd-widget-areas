@@ -272,6 +272,7 @@ class Theme_Blvd_Sidebar_Manager {
 						<div class="ajax-overlay"></div>
 						<div class="icon-holder">
 							<span class="tb-loader ajax-loading"></span>
+							<span class="tb-sidebar-override-icon"></span>
 							<?php screen_icon( 'themes' ); ?>
 						</div>
 						<span class="note"><?php _e('Select any custom sidebars you\'d like applied to this page.', 'themeblvd_sidebars'); ?></span>
@@ -451,6 +452,7 @@ class Theme_Blvd_Sidebar_Manager {
 	 */
 	public function add_sidebar_mini() {
 		?>
+		<h3><?php _e( 'Add New Sidebar', 'themeblvd_sidebars' ); ?></h3>
 		<div class="section">
 			<div class="add-sidebar-items">
 				<?php $nonce = wp_create_nonce( 'themeblvd_new_sidebar' ); ?>

@@ -36,6 +36,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.1.6 =
 
+* Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
+
 = 1.1.5 =
 
 * Removed deprecated media uploader script.

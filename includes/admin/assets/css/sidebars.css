@@ -160,7 +160,7 @@
 	bottom: 0;
 	left: 0;
 	z-index: 4;
-} 
+}
 #tb_sidebars.postbox #override_sidebars {
 	position: relative;
 }
@@ -183,7 +183,7 @@
 #tb_sidebars.postbox .add-sidebar-items input {
 	float: left;
 	margin-right: 4px;
-} 
+}
 #tb_sidebars.postbox .add-sidebar-items .button {
 	float: left;
 	margin: 1px;
@@ -193,4 +193,45 @@
 	margin: 4px 0 0 10px;
 	max-width: inherit;
 	padding: 0;
+}
+
+/* =WordPress 3.8 (MP6)
+-----------------------------------------------*/
+
+/* Meta Box - Sidebar Overrides */
+.mp6 #tb_sidebars.postbox #optionsframework,
+.mp6 #tb_sidebars.postbox #sidebar_blvd {
+	background: #ffffff;
+}
+.mp6 #tb_sidebars.postbox .section-info {
+	background: #f5f5f5;
+}
+.mp6 .tb-sidebar-override-icon {
+	position: absolute;
+	top: 0;
+	left: 4px;
+}
+.mp6 .tb-sidebar-override-icon:before {
+	content: '\f107';
+	font-family: "dashicons";
+	font-size: 18px;
+}
+.mp6 #tb_sidebars.postbox .meta-box-nav li a {
+	-webkit-border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	-moz-border-radius-topleft: 0;
+	-moz-border-radius-topright: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+.mp6 #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
+	border-bottom-color: #f5f5f5;
+}
+.mp6 #tb_sidebars.postbox .meta-box-nav li a:hover,
+.mp6 #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
+	background: #f5f5f5;
+}
+.mp6 #tb_sidebars.postbox .inside h3 {
+	background: #f5f5f5;
+	border-bottom-color: #dfdfdf;
 }
