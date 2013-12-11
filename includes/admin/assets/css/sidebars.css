@@ -199,24 +199,24 @@
 -----------------------------------------------*/
 
 /* Meta Box - Sidebar Overrides */
-.mp6 #tb_sidebars.postbox #optionsframework,
-.mp6 #tb_sidebars.postbox #sidebar_blvd {
+.themeblvd-ui #tb_sidebars.postbox #optionsframework,
+.themeblvd-ui #tb_sidebars.postbox #sidebar_blvd {
 	background: #ffffff;
 }
-.mp6 #tb_sidebars.postbox .section-info {
+.themeblvd-ui #tb_sidebars.postbox .section-info {
 	background: #f5f5f5;
 }
-.mp6 .tb-sidebar-override-icon {
+.themeblvd-ui .tb-sidebar-override-icon {
 	position: absolute;
 	top: 0;
 	left: 4px;
 }
-.mp6 .tb-sidebar-override-icon:before {
+.themeblvd-ui .tb-sidebar-override-icon:before {
 	content: '\f107';
 	font-family: "dashicons";
 	font-size: 18px;
 }
-.mp6 #tb_sidebars.postbox .meta-box-nav li a {
+.themeblvd-ui #tb_sidebars.postbox .meta-box-nav li a {
 	-webkit-border-top-left-radius: 0;
 	-webkit-border-top-right-radius: 0;
 	-moz-border-radius-topleft: 0;
@@ -224,14 +224,14 @@
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
-.mp6 #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
+.themeblvd-ui #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
 	border-bottom-color: #f5f5f5;
 }
-.mp6 #tb_sidebars.postbox .meta-box-nav li a:hover,
-.mp6 #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
+.themeblvd-ui #tb_sidebars.postbox .meta-box-nav li a:hover,
+.themeblvd-ui #tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
 	background: #f5f5f5;
 }
-.mp6 #tb_sidebars.postbox .inside h3 {
+.themeblvd-ui #tb_sidebars.postbox .inside h3 {
 	background: #f5f5f5;
 	border-bottom-color: #dfdfdf;
 }
