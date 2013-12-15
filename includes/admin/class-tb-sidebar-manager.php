@@ -14,7 +14,6 @@ class Theme_Blvd_Sidebar_Manager {
 		// Add sidebar manager admin page
 		add_action( 'admin_menu', array( $this, 'add_page' ) );
 		add_action( 'admin_init', array( $this, 'hijack_submenu' ) );
-		add_action( 'widgets_admin_page', array( $this, 'widgets_page' ) );
 
 		// Filter on javascript locals specifically for Widget Areas Manager
 		// onto Theme Blvd framework locals.
@@ -164,20 +163,6 @@ class Theme_Blvd_Sidebar_Manager {
 			'sidebar_layout_set'	=> __( 'With how you\'ve selected to start your layout, there is already a sidebar layout applied initially.', 'themeblvd_sidebars' )
 		);
 		return array_merge($current, $new);
-	}
-
-	/**
-	 * Message for Widgets page.
-	 *
-	 * @since 1.0.0
-	 */
-	public function widgets_page() {
-		// Kind of a sloppy w/all the yucky inline styles, but otherwise,
-		// we'd have to enqueue an entire stylesheet just for the widgets
-		// page of the admin panel.
-		echo '<div style="width:300px;float:right;position:relative;z-index:1000"><p class="description" style="padding-left:5px">';
-		printf( __( 'In the %s, you can create and manage widget areas for specific pages of your website to override the default locations you see below.', 'themeblvd_sidebars' ), '<a href="themes.php?page=themeblvd_widget_areas">'.__( 'Widget Area Manager', 'themeblvd_sidebars' ).'</a>' );
-		echo '</p></div>';
 	}
 
 	/**
