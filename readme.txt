@@ -34,7 +34,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 == Changelog ==
 
-= 1.1.6 =
+= 1.2.0 =
 
 * Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
 

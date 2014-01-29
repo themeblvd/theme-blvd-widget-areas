@@ -25,7 +25,7 @@ License: GPL2
 
 */
 
-define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.1.6' );
+define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.2.0' );
 define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
