@@ -263,7 +263,7 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 
 			// Custom conditional
 			if ( $assignment['type'] == 'custom' ) {
-				$process = 'if ('.$assignment['id'].') $id = $assignment["post_slug"];';
+				$process = 'if ('.htmlspecialchars_decode($assignment['id']).') $id = $assignment["post_slug"];';
 				eval( $process );
 			}
 
