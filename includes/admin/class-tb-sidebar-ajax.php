@@ -118,7 +118,7 @@ class Theme_Blvd_Sidebar_Ajax {
 		$post_id = wp_insert_post( $args );
 
 		// Establish post meta for new sidebar
-		update_post_meta( $post_id, 'location', null );
+		update_post_meta( $post_id, 'location', 'floating' );
 		update_post_meta( $post_id, 'assignments', array() );
 
 		// Respond with updated form items to
