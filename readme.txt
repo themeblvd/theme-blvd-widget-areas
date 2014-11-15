@@ -31,6 +31,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 1. Manage your custom widget areas.
 2. Add a new custom widget areas and edit assignments.
+3. Quickly override the sidebar when editing a page.
 
 == Changelog ==
 
