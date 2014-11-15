@@ -36,6 +36,9 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.1 =
 
+* Fixed some admin page styling quirks.
+* When widget area is created from Edit Page screen, it's now initially set to `floating`.
+
 = 1.2.0 =
 
 * Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
