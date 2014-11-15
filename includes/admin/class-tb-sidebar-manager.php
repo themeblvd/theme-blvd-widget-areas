@@ -120,10 +120,12 @@ class Theme_Blvd_Sidebar_Manager {
 
 		global $pagenow;
 
+		$current = get_current_screen();
+
 		wp_enqueue_style( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 
-		if ( $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
+		if ( $current->base == 'appearance_page_themeblvd_widget_areas' || $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
 			wp_enqueue_style( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
 		}
 	}

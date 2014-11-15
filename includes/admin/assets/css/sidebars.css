@@ -1,3 +1,11 @@
+/* =Appearance > Widget Areas
+----------------------------------------------- */
+
+#manage_sidebars .conflict,
+#manage_sidebars .no-conflict {
+	background: none;
+}
+
 /* =Meta Box (for Edit Page/Post screen)
 ----------------------------------------------- */
 
