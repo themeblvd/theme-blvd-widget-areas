@@ -35,7 +35,7 @@ class Theme_Blvd_Sidebar_Manager {
 	 * @since 1.0.0
 	 */
 	public function add_page() {
-		$title = __( 'Widget Areas', 'themeblvd_sidebars' );
+		$title = __( 'Widget Areas', 'theme-blvd-widget-areas' );
 		$admin_page = add_theme_page( $title, $title, themeblvd_admin_module_cap( 'sidebars' ), 'themeblvd_widget_areas', array( $this, 'admin_page' ) );
 		add_action( 'admin_print_styles-'.$admin_page, array( $this, 'load_styles' ) );
 		add_action( 'admin_print_scripts-'.$admin_page, array( $this, 'load_scripts' ) );
@@ -55,7 +55,7 @@ class Theme_Blvd_Sidebar_Manager {
 
 		$args = apply_filters( 'themeblvd_sidebar_meta_box', array(
 			'id' 		=> 'tb_sidebars',
-			'name'		=> __('Sidebar Overrides', 'themeblvd_sidebars'),
+			'name'		=> __('Sidebar Overrides', 'theme-blvd-widget-areas'),
 			'callback'	=> array( $this, 'meta_box' ),
 			'post_type'	=> array( 'page', 'post' ),
 			'context'	=> 'normal',
@@ -126,7 +126,7 @@ class Theme_Blvd_Sidebar_Manager {
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 
 		if ( $current->base == 'appearance_page_themeblvd_widget_areas' || $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
-			wp_enqueue_style( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
+			wp_enqueue_style( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
 		}
 	}
 
@@ -142,11 +142,11 @@ class Theme_Blvd_Sidebar_Manager {
 		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_enqueue_script( 'themeblvd_sidebars', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
+		wp_enqueue_script( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 
 		// Add JS locals. Not needed for Edit Page screen, already exists.
 		if ( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
-			wp_localize_script( 'themeblvd_sidebars', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
+			wp_localize_script( 'theme-blvd-widget-areas', 'themeblvd', themeblvd_get_admin_locals( 'js' ) ); // @see add_js_locals()
 		}
 
 	}
@@ -159,10 +159,10 @@ class Theme_Blvd_Sidebar_Manager {
 	 */
 	public function add_js_locals( $current ) {
 		$new = array(
-			'edit_sidebar'			=> __( 'Edit', 'themeblvd_sidebars' ),
-			'delete_sidebar'		=> __( 'Are you sure you want to delete the widget area(s)?', 'themeblvd_sidebars' ),
-			'sidebar_created'		=> __( 'Widget Area created!', 'themeblvd_sidebars' ),
-			'sidebar_layout_set'	=> __( 'With how you\'ve selected to start your layout, there is already a sidebar layout applied initially.', 'themeblvd_sidebars' )
+			'edit_sidebar'			=> __( 'Edit', 'theme-blvd-widget-areas' ),
+			'delete_sidebar'		=> __( 'Are you sure you want to delete the widget area(s)?', 'theme-blvd-widget-areas' ),
+			'sidebar_created'		=> __( 'Widget Area created!', 'theme-blvd-widget-areas' ),
+			'sidebar_layout_set'	=> __( 'With how you\'ve selected to start your layout, there is already a sidebar layout applied initially.', 'theme-blvd-widget-areas' )
 		);
 		return array_merge($current, $new);
 	}
@@ -182,9 +182,9 @@ class Theme_Blvd_Sidebar_Manager {
 			    </div>
 			    <?php screen_icon( 'themes' ); ?>
 			    <h2 class="nav-tab-wrapper">
-			        <a href="#manage_sidebars" id="manage_sidebars-tab" class="nav-tab" title="<?php _e( 'Custom Widget Areas', 'themeblvd_sidebars' ); ?>"><?php _e( 'Custom Widget Areas', 'themeblvd_sidebars' ); ?></a>
-			        <a href="#add_sidebar" id="add_sidebar-tab" class="nav-tab" title="<?php _e( 'Add New', 'themeblvd_sidebars' ); ?>"><?php _e( 'Add New', 'themeblvd_sidebars' ); ?></a>
-			        <a href="#edit_sidebar" id="edit_sidebar-tab" class="nav-tab nav-edit-sidebar" title="<?php _e( 'Edit', 'themeblvd_sidebars' ); ?>"><?php _e( 'Edit', 'themeblvd_sidebars' ); ?></a>
+			        <a href="#manage_sidebars" id="manage_sidebars-tab" class="nav-tab" title="<?php _e( 'Custom Widget Areas', 'theme-blvd-widget-areas' ); ?>"><?php _e( 'Custom Widget Areas', 'theme-blvd-widget-areas' ); ?></a>
+			        <a href="#add_sidebar" id="add_sidebar-tab" class="nav-tab" title="<?php _e( 'Add New', 'theme-blvd-widget-areas' ); ?>"><?php _e( 'Add New', 'theme-blvd-widget-areas' ); ?></a>
+			        <a href="#edit_sidebar" id="edit_sidebar-tab" class="nav-tab nav-edit-sidebar" title="<?php _e( 'Edit', 'theme-blvd-widget-areas' ); ?>"><?php _e( 'Edit', 'theme-blvd-widget-areas' ); ?></a>
 			    </h2>
 
 				<!-- MANAGE SIDEBARS (start) -->
@@ -262,11 +262,11 @@ class Theme_Blvd_Sidebar_Manager {
 							<span class="tb-sidebar-override-icon"></span>
 							<?php screen_icon( 'themes' ); ?>
 						</div>
-						<span class="note"><?php _e('Select any custom sidebars you\'d like applied to this page.', 'themeblvd_sidebars'); ?></span>
+						<span class="note"><?php _e('Select any custom sidebars you\'d like applied to this page.', 'theme-blvd-widget-areas'); ?></span>
 					</div>
 					<ul>
-						<li><a href="#override_sidebars"><?php _e('Assign Overrides', 'themeblvd_sidebars'); ?></a></li>
-						<li><a href="#add_sidebar"><?php _e('Add Sidebar', 'themeblvd_sidebars'); ?></a></li>
+						<li><a href="#override_sidebars"><?php _e('Assign Overrides', 'theme-blvd-widget-areas'); ?></a></li>
+						<li><a href="#add_sidebar"><?php _e('Add Sidebar', 'theme-blvd-widget-areas'); ?></a></li>
 					</ul>
 					<div class="clear"></div>
 				</div><!-- .meta-box-nav (end) -->
@@ -345,25 +345,25 @@ class Theme_Blvd_Sidebar_Manager {
 		// Setup columns for management table
 		$columns = array(
 			array(
-				'name' 		=> __( 'Widget Area Title', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Title', 'theme-blvd-widget-areas' ),
 				'type' 		=> 'title',
 			),
 			array(
-				'name' 		=> __( 'ID', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'ID', 'theme-blvd-widget-areas' ),
 				'type' 		=> 'slug',
 			),
 			/* Hiding the true post ID from user to avoid confusion.
 			array(
-				'name' 		=> __( 'ID', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'ID', 'theme-blvd-widget-areas' ),
 				'type' 		=> 'id',
 			),
 			*/
 			array(
-				'name' 		=> __( 'Location', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Location', 'theme-blvd-widget-areas' ),
 				'type' 		=> 'sidebar_location'
 			),
 			array(
-				'name' 		=> __( 'Assignments', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Assignments', 'theme-blvd-widget-areas' ),
 				'type' 		=> 'assignments',
 			)
 		);
@@ -382,28 +382,28 @@ class Theme_Blvd_Sidebar_Manager {
 
 		// Setup sidebar layouts
 		$sidebars = themeblvd_get_sidebar_locations();
-		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'themeblvd_sidebars' ) );
+		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'theme-blvd-widget-areas' ) );
 		foreach ( $sidebars as $sidebar )
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
 
 		// Setup options array to display form
 		$options = array(
 			array(
-				'name' 		=> __( 'Widget Area Name', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Enter a user-friendly name for your widget area.<br><br><em>Example: My Sidebar</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Name', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Enter a user-friendly name for your widget area.<br><br><em>Example: My Sidebar</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'sidebar_name',
 				'type' 		=> 'text'
 			),
 			array(
-				'name' 		=> __( 'Widget Area Location', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Select which location on the site this widget area will be among the theme\'s currently supported widget area locations.<br><br><em>Note: A "Floating Widget Area" can be used in dynamic elements like setting up columns in the layout builder, for example.</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Location', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Select which location on the site this widget area will be among the theme\'s currently supported widget area locations.<br><br><em>Note: A "Floating Widget Area" can be used in dynamic elements like setting up columns in the layout builder, for example.</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'sidebar_location',
 				'type' 		=> 'select',
 				'options' 	=> $sidebar_locations,
 			),
 			array(
-				'name' 		=> __( 'Widget Area Assignments', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Select the places on your site you\'d like this custom widget area to show in the location you picked previously.<br><br><em>Note: You can edit the location you selected previously and these assignments later if you change your mind.</em><br><br><em>Note: Assignments will be ignored on "Floating Widget Areas" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Assignments', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Select the places on your site you\'d like this custom widget area to show in the location you picked previously.<br><br><em>Note: You can edit the location you selected previously and these assignments later if you change your mind.</em><br><br><em>Note: Assignments will be ignored on "Floating Widget Areas" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'sidebar_assignments',
 				'type' 		=> 'conditionals'
 			)
@@ -415,13 +415,13 @@ class Theme_Blvd_Sidebar_Manager {
 		?>
 		<div class="metabox-holder">
 			<div class="postbox">
-				<h3><?php _e( 'Add New Widget Area', 'themeblvd_sidebars' ); ?></h3>
+				<h3><?php _e( 'Add New Widget Area', 'theme-blvd-widget-areas' ); ?></h3>
 				<form id="add_new_sidebar">
 					<div class="inner-group">
 						<?php echo $form[0]; ?>
 					</div><!-- .group (end) -->
 					<div id="optionsframework-submit">
-						<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Widget Area', 'themeblvd_sidebars' ); ?>">
+						<input type="submit" class="button-primary" name="update" value="<?php _e( 'Add New Widget Area', 'theme-blvd-widget-areas' ); ?>">
 						<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
 			            <div class="clear"></div>
 					</div>
@@ -439,18 +439,18 @@ class Theme_Blvd_Sidebar_Manager {
 	 */
 	public function add_sidebar_mini() {
 		?>
-		<h3><?php _e( 'Add New Sidebar', 'themeblvd_sidebars' ); ?></h3>
+		<h3><?php _e( 'Add New Sidebar', 'theme-blvd-widget-areas' ); ?></h3>
 		<div class="section">
 			<div class="add-sidebar-items">
 				<?php $nonce = wp_create_nonce( 'themeblvd_new_sidebar' ); ?>
 				<input type="hidden" name="_tb_new_sidebar_nonce" value="<?php echo $nonce; ?>" />
-				<input type="text" name="_tb_new_sidebar_name" placeholder="<?php _e('New Sidebar Name', 'themeblvd_sidebars'); ?>" />
-				<a href="#" class="new-sidebar-submit button"><?php _e('Add Sidebar', 'themeblvd_sidebars'); ?></a>
-				<p class="explain"><?php _e('Enter a user-friendly name for your new sidebar and add it.', 'themeblvd_sidebars'); ?></p>
+				<input type="text" name="_tb_new_sidebar_name" placeholder="<?php _e('New Sidebar Name', 'theme-blvd-widget-areas'); ?>" />
+				<a href="#" class="new-sidebar-submit button"><?php _e('Add Sidebar', 'theme-blvd-widget-areas'); ?></a>
+				<p class="explain"><?php _e('Enter a user-friendly name for your new sidebar and add it.', 'theme-blvd-widget-areas'); ?></p>
 			</div>
 		</div>
 		<div class="add-sidebar-note">
-			<p><?php _e('Note: Any sidebars you create here will initially be created as "floating" widget areas with no assignments. If you need to, you can edit these in the future from Appearance > Widget Areas.', 'themeblvd_sidebars'); ?></p>
+			<p><?php _e('Note: Any sidebars you create here will initially be created as "floating" widget areas with no assignments. If you need to, you can edit these in the future from Appearance > Widget Areas.', 'theme-blvd-widget-areas'); ?></p>
 		</div>
 		<?php
 
@@ -469,35 +469,35 @@ class Theme_Blvd_Sidebar_Manager {
 
 		// Setup sidebar layouts
 		$sidebars = themeblvd_get_sidebar_locations();
-		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'themeblvd_sidebars' ) );
+		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'theme-blvd-widget-areas' ) );
 		foreach ( $sidebars as $sidebar )
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
 
 		// Setup options array to display form
 		$options = array(
 			array(
-				'name' 		=> __( 'Widget Area Name', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Here you can edit the name of your widget area. This will adjust how your widget area is labeled for you here in the WordPress admin panel.', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Name', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Here you can edit the name of your widget area. This will adjust how your widget area is labeled for you here in the WordPress admin panel.', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'post_title',
 				'type' 		=> 'text'
 			),
 			array(
-				'name' 		=> __( 'Widget Area ID', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Here you can edit the internal ID of your widget area.<br><br><em>Warning: This is how WordPress assigns your widgets and how the theme applies your widget area. If you change this ID, you will need to re-assign any widgets under Appearance > Widgets, and re-visit any areas you may have added this as a floating widget area.</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area ID', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Here you can edit the internal ID of your widget area.<br><br><em>Warning: This is how WordPress assigns your widgets and how the theme applies your widget area. If you change this ID, you will need to re-assign any widgets under Appearance > Widgets, and re-visit any areas you may have added this as a floating widget area.</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'post_name',
 				'type' 		=> 'text',
 				'class'		=> 'hide' // Hidden from user. For debugging can display and change with dev console.
 			),
 			array(
-				'name' 		=> __( 'Widget Area Location', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Select which location on the site this widget area will be among the theme\'s currently supported widget area locations.<br><br><em>Note: A "Floating Widget Area" can be used in dynamic elements like setting up columns in the layout builder, for example.</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Location', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Select which location on the site this widget area will be among the theme\'s currently supported widget area locations.<br><br><em>Note: A "Floating Widget Area" can be used in dynamic elements like setting up columns in the layout builder, for example.</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'sidebar_location',
 				'type' 		=> 'select',
 				'options' 	=> $sidebar_locations,
 			),
 			array(
-				'name' 		=> __( 'Widget Area Assignments', 'themeblvd_sidebars' ),
-				'desc' 		=> __( 'Select the places on your site you\'d like this custom widget area to show in the location you picked previously.<br><br><em>Note: Assignments will be ignored on "Floating Widget Areas" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>', 'themeblvd_sidebars' ),
+				'name' 		=> __( 'Widget Area Assignments', 'theme-blvd-widget-areas' ),
+				'desc' 		=> __( 'Select the places on your site you\'d like this custom widget area to show in the location you picked previously.<br><br><em>Note: Assignments will be ignored on "Floating Widget Areas" but since you can always come back and change the location for a custom widget area, assignments still will always be stored.</em>', 'theme-blvd-widget-areas' ),
 				'id' 		=> 'sidebar_assignments',
 				'type' 		=> 'conditionals'
 			)
@@ -522,7 +522,7 @@ class Theme_Blvd_Sidebar_Manager {
 					<?php echo $form[0]; ?>
 				</div><!-- .group (end) -->
 				<div id="optionsframework-submit">
-					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Save Widget Area', 'themeblvd_sidebars' ); ?>">
+					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Save Widget Area', 'theme-blvd-widget-areas' ); ?>">
 					<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
 		            <div class="clear"></div>
 				</div>
@@ -562,7 +562,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// about the "location" and the user can just override
 		// with whatever custom widget area they want.
 		$custom_sidebars = get_posts('post_type=tb_sidebar&numberposts=-1');
-		$sidebars_select = array( 'default' => ' &#8211; '.__( 'No Override', 'themeblvd_sidebars' ).' &#8211; ');
+		$sidebars_select = array( 'default' => ' &#8211; '.__( 'No Override', 'theme-blvd-widget-areas' ).' &#8211; ');
 		foreach ( $custom_sidebars as $sidebar ) {
 			$sidebars_select[$sidebar->post_name] = $sidebar->post_title;
 		}
@@ -571,7 +571,7 @@ class Theme_Blvd_Sidebar_Manager {
 		$options = array(
 			array(
 				'type' 	=> 'info',
-				'desc' 	=> __( 'Here you can select any custom widget areas you\'d like applied to the sidebars of this specific page. When utilizing this feature, current locations and assignments of your custom widget areas setup under <a href="themes.php?page=themeblvd_widget_areas">Appearance > Widget Areas</a> will be ignored.', 'themeblvd_sidebars' ),
+				'desc' 	=> __( 'Here you can select any custom widget areas you\'d like applied to the sidebars of this specific page. When utilizing this feature, current locations and assignments of your custom widget areas setup under <a href="themes.php?page=themeblvd_widget_areas">Appearance > Widget Areas</a> will be ignored.', 'theme-blvd-widget-areas' ),
 				'class'	=> 'section-description'
 			)
 		);
@@ -587,7 +587,7 @@ class Theme_Blvd_Sidebar_Manager {
 			// Add option for this location
 			$options[] = array(
 				'name' 		=> $location['location']['name'],
-				'desc' 		=> sprintf( __('Select from any of your custom widget areas to override the %s location on this page only.', 'themeblvd_sidebars'), $location['location']['name'] ),
+				'desc' 		=> sprintf( __('Select from any of your custom widget areas to override the %s location on this page only.', 'theme-blvd-widget-areas'), $location['location']['name'] ),
 				'id' 		=> $location['location']['id'],
 				'type' 		=> 'select',
 				'options' 	=> $sidebars_select

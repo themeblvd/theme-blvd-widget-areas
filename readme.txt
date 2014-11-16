@@ -39,6 +39,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 * Fixed some admin page styling quirks.
 * When widget area is created from Edit Page screen, it's now initially set to `floating`.
+* GlotPress compatibility (for 2015 wordpress.org release).
 
 = 1.2.0 =
 

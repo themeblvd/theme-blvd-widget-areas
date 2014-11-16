@@ -42,8 +42,8 @@ function themeblvd_sidebars_warning() {
 	global $current_user;
 	if ( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning' ) ) {
 		echo '<div class="updated">';
-		echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'themeblvd_sidebars' ).'</p>';
-		echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning').'">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'themeblvd_sidebars').'</a></p>';
+		echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'theme-blvd-widget-areas' ).'</p>';
+		echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'theme-blvd-widget-areas').'</a></p>';
 		echo '</div>';
 	}
 }
@@ -58,8 +58,8 @@ function themeblvd_sidebars_warning_2() {
 	global $current_user;
     if ( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning_2' ) ) {
         echo '<div class="updated">';
-        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'themeblvd_sidebars' ).'</p>';
-        echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning_2').'">'.__('Dismiss this notice', 'themeblvd_sidebars').'</a></p>';
+        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'theme-blvd-widget-areas' ).'</p>';
+        echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning_2').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a></p>';
         echo '</div>';
     }
 }
@@ -102,7 +102,7 @@ function themeblvd_register_custom_sidebars() {
 
 		// Setup arguments for register_sidebar()
 		$args = array(
-			'name' 			=> __( 'Custom', 'themeblvd_sidebars' ).': '.$sidebar->post_title,
+			'name' 			=> __( 'Custom', 'theme-blvd-widget-areas' ).': '.$sidebar->post_title,
 		    'id' 			=> $sidebar->post_name,
 		    'before_widget' => '<aside id="%1$s" class="widget %2$s"><div class="widget-inner">',
 			'after_widget' 	=> '</div></aside>',
@@ -111,9 +111,9 @@ function themeblvd_register_custom_sidebars() {
 		);
 		$location = get_post_meta( $sidebar->ID, 'location', true );
 		if ( $location && $location != 'floating' ) {
-			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'themeblvd_sidebars' ), themeblvd_get_sidebar_location_name( $location ) );
+			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'theme-blvd-widget-areas' ), themeblvd_get_sidebar_location_name( $location ) );
 		} else {
-			$args['description'] = __( 'This is a custom floating widget area.', 'themeblvd_sidebars' );
+			$args['description'] = __( 'This is a custom floating widget area.', 'theme-blvd-widget-areas' );
 		}
 
 		// Extend

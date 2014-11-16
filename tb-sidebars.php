@@ -5,6 +5,7 @@ Description: This plugin works in conjuction with the Theme Blvd framework and i
 Version: 1.2.1
 Author: Theme Blvd
 Author URI: http://themeblvd.com
+Text Domain: theme-blvd-widget-areas
 License: GPL2
 
     Copyright 2013  Theme Blvd
@@ -84,9 +85,8 @@ add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
 /**
  * Register text domain for localization.
  *
- * @since 1.0.0
+ * @since 1.2.1
  */
-function themeblvd_sidebars_textdomain() {
-	load_plugin_textdomain( 'themeblvd_sidebars', false, TB_SIDEBARS_PLUGIN_DIR . '/lang' );
-}
-add_action( 'plugins_loaded', 'themeblvd_sidebars_textdomain' );
+add_action( 'init', function() {
+	load_plugin_textdomain('theme-blvd-widget-areas');
+} );
