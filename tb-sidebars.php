@@ -2,7 +2,7 @@
 /*
 Plugin Name: Theme Blvd Widget Areas
 Description: This plugin works in conjuction with the Theme Blvd framework and its core addons to allow you to create custom widget areas and apply them in various ways.
-Version: 1.2.1
+Version: 1.2.2
 Author: Theme Blvd
 Author URI: http://themeblvd.com
 Text Domain: theme-blvd-widget-areas
@@ -26,7 +26,7 @@ License: GPL2
 
 */
 
-define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.2.1' );
+define( 'TB_SIDEBARS_PLUGIN_VERSION', '1.2.2' );
 define( 'TB_SIDEBARS_PLUGIN_DIR', dirname( __FILE__ ) );
 define( 'TB_SIDEBARS_PLUGIN_URI', plugins_url( '' , __FILE__ ) );
 
@@ -87,6 +87,13 @@ add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
  *
  * @since 1.2.1
  */
+function themeblvd_sidebars_localize() {
+	load_plugin_textdomain('theme-blvd-widget-areas');
+}
+add_action('init', 'themeblvd_sidebars_localize');
+
+/* Requires PHP 5.3+
 add_action( 'init', function() {
 	load_plugin_textdomain('theme-blvd-widget-areas');
 } );
+*/
