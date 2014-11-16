@@ -37,7 +37,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.2 =
 
-* Compatibility for servers still running PHP 5.2 for last upate's edits.
+* Compatibility for servers still running PHP 5.2 for last update’s edits.
 
 = 1.2.1 =
 
