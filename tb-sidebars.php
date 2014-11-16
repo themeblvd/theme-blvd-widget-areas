@@ -67,7 +67,7 @@ function themeblvd_sidebars_init() {
 
 	// General actions and filters
 	add_action( 'init', 'themeblvd_sidebars_register_post_type' );
-	add_action( 'after_setup_theme', 'themeblvd_register_custom_sidebars', 1001 ); // Hooked directly after theme framework's sidebar registration
+	add_action( 'widgets_init', 'themeblvd_register_custom_sidebars', 11 ); // Hooked directly after theme framework's sidebar registration
 	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id', 10, 3 ); // This filter happens in the theme framework's themeblvd_frontend_init()
 
 	// Admin files, actions, and filters
