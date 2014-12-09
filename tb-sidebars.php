@@ -49,6 +49,9 @@ function themeblvd_sidebars_init() {
 	// Include general functions
 	include_once( TB_SIDEBARS_PLUGIN_DIR . '/includes/general.php' );
 
+	// Check for disable of the admin nag
+	add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
+
 	// Check to make sure Theme Blvd Framework 2.2+ is running
 	if( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
 		add_action( 'admin_notices', 'themeblvd_sidebars_warning' );
@@ -58,11 +61,6 @@ function themeblvd_sidebars_init() {
 	// If using framework v2.2.0, tell them they should now update to 2.2.1
 	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
 		add_action( 'admin_notices', 'themeblvd_sidebars_warning_2' );
-	}
-
-	// If user has a version of TB framework that doesn't have the nag disable yet, hook in our's
-	if( ! function_exists( 'themeblvd_disable_nag' ) ) {
-		add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
 	}
 
 	// General actions and filters

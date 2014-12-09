@@ -5,9 +5,19 @@
  * @since 1.1.0
  */
 function themeblvd_sidebars_disable_nag() {
+
 	global $current_user;
-    if ( isset( $_GET['tb_nag_ignore'] ) ) {
-         add_user_meta( $current_user->ID, $_GET['tb_nag_ignore'], 'true', true );
+
+	if ( ! isset($_GET['nag-ignore']) ) {
+		return;
+	}
+
+	if ( strpos($_GET['nag-ignore'], 'tb-nag-') !== 0 ) { // meta key must start with "tb-nag-"
+		return;
+	}
+
+	if ( isset($_GET['security']) && wp_verify_nonce( $_GET['security'], 'themeblvd-sidebars-nag' ) ) {
+		add_user_meta( $current_user->ID, $_GET['nag-ignore'], 'true', true );
 	}
 }
 
@@ -22,11 +32,13 @@ function themeblvd_sidebars_disable_url( $id ) {
 
 	$url = admin_url( $pagenow );
 
-	if ( ! empty( $_SERVER['QUERY_STRING'] ) ) {
-		$url .= sprintf( '?%s&tb_nag_ignore=%s', $_SERVER['QUERY_STRING'], $id );
+	if( ! empty( $_SERVER['QUERY_STRING'] ) ) {
+		$url .= sprintf( '?%s&nag-ignore=%s', $_SERVER['QUERY_STRING'], 'tb-nag-'.$id );
 	} else {
-		$url .= sprintf( '?tb_nag_ignore=%s', $id );
+		$url .= sprintf( '?nag-ignore=%s', 'tb-nag-'.$id );
 	}
+
+	$url .= sprintf( '&security=%s', wp_create_nonce('themeblvd-sidebars-nag') );
 
 	return $url;
 }
@@ -39,11 +51,13 @@ function themeblvd_sidebars_disable_url( $id ) {
  * @since 1.0.0
  */
 function themeblvd_sidebars_warning() {
+
 	global $current_user;
-	if ( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning' ) ) {
+
+	if ( ! get_user_meta( $current_user->ID, 'tb-nag-sidebars-framework-1' ) ) {
 		echo '<div class="updated">';
-		echo '<p>'.__( 'You currently have the "Theme Blvd Widget Areas" plugin activated, however you are not using a theme with Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'theme-blvd-widget-areas' ).'</p>';
-		echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'theme-blvd-widget-areas').'</a></p>';
+		echo '<p><strong>Theme Blvd Widget Areas:</strong> '.__( 'You are not using a theme with the Theme Blvd Framework v2.2+, and so this plugin will not do anything.', 'theme-blvd-widget-areas' ).'</p>';
+		echo '<p><a href="'.themeblvd_sidebars_disable_url('sidebars-framework-1').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a> | <a href="http://www.themeblvd.com" target="_blank">'.__('Visit ThemeBlvd.com', 'theme-blvd-widget-areas').'</a></p>';
 		echo '</div>';
 	}
 }
@@ -55,11 +69,13 @@ function themeblvd_sidebars_warning() {
  * @since 1.1.0
  */
 function themeblvd_sidebars_warning_2() {
+
 	global $current_user;
-    if ( ! get_user_meta( $current_user->ID, 'tb_sidebars_warning_2' ) ) {
+
+    if ( ! get_user_meta( $current_user->ID, 'tb-nag-sidebars-framework-2' ) ) {
         echo '<div class="updated">';
-        echo '<p>'.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of Theme Blvd Widget Areas, you should update your current theme to its latest version, which will contain framework v2.2.1+.', 'theme-blvd-widget-areas' ).'</p>';
-        echo '<p><a href="'.themeblvd_sidebars_disable_url('tb_sidebars_warning_2').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a></p>';
+        echo '<p><strong>Theme Blvd Widget Areas:</strong> '.__( 'You are currently running a theme with Theme Blvd framework v2.2.0. To get the best results from this version of the plugin, you should update your current theme to its latest version.', 'theme-blvd-widget-areas' ).'</p>';
+        echo '<p><a href="'.themeblvd_sidebars_disable_url('sidebars-framework-2').'">'.__('Dismiss this notice', 'theme-blvd-widget-areas').'</a></p>';
         echo '</div>';
     }
 }
