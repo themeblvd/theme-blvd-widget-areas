@@ -56,18 +56,23 @@ class Theme_Blvd_Sidebar_Ajax {
 
 		// Setup location
 		$location = null;
+
 		if ( isset( $config['options']['sidebar_location'] ) ) {
+
 			// Sanitize location
 			if ( $config['options']['sidebar_location'] == 'floating' ) {
 				$location = $config['options']['sidebar_location'];
 			} else {
+
 				$exists = false;
 				$framework_sidebars = themeblvd_get_sidebar_locations();
+
 				foreach ( $framework_sidebars as $framework_sidebar ) {
 					if ( $framework_sidebar['location']['id'] == $config['options']['sidebar_location'] ) {
 						$exists = true;
 					}
 				}
+
 				if ( $exists ) {
 					$location = $config['options']['sidebar_location'];
 				}
@@ -148,18 +153,25 @@ class Theme_Blvd_Sidebar_Ajax {
 
 		// Setup location
 		$location = null;
+
 		if ( isset( $config['options']['sidebar_location'] ) ) {
+
 			// Sanitize location
 			if ( $config['options']['sidebar_location'] == 'floating' ) {
+
 				$location = $config['options']['sidebar_location'];
+
 			} else {
+
 				$exists = false;
 				$framework_sidebars = themeblvd_get_sidebar_locations();
+
 				foreach ( $framework_sidebars as $framework_sidebar ) {
 					if ( $framework_sidebar['location']['id'] == $config['options']['sidebar_location'] ) {
 						$exists = true;
 					}
 				}
+
 				if ( $exists ) {
 					$location = $config['options']['sidebar_location'];
 				}
@@ -169,6 +181,7 @@ class Theme_Blvd_Sidebar_Ajax {
 		// Setup assignments
 		$assignments = array();
 		$name = null;
+
 		if ( isset( $config['options']['sidebar_assignments'] ) && has_filter( 'themeblvd_sanitize_conditionals' ) ) {
 			$assignments = apply_filters( 'themeblvd_sanitize_conditionals', $config['options']['sidebar_assignments'], $post_slug, $post_id );
 		}

@@ -63,15 +63,16 @@ class Theme_Blvd_Sidebar_Manager {
 		));
 
 		if ( $args['post_type'] ){ // In theory, if you were trying to prevent the metabox or any of its elements from being added, you'd filter $args['post_type'] to null.
-			// Include assets
 			foreach ( $args['post_type'] as $post_type ){
+
 				// Include assets
-				if ( $pagenow == 'post.php' || $pagenow == 'post-new.php' && $typenow == $post_type ){
+				if ( ( $pagenow == 'post.php' || $pagenow == 'post-new.php' ) && $typenow == $post_type ){
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_styles' ) );
 					add_action( 'admin_enqueue_scripts', array( $this, 'load_scripts' ) );
 					// @deprecated add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_css', 0 );
 					// @deprecated add_action( 'admin_enqueue_scripts', 'optionsframework_mlu_js', 0 );
 				}
+
 				// Add meta box
 				add_meta_box( $args['id'], $args['name'], $args['callback'], $post_type, $args['context'], $args['priority'] );
 			}
@@ -470,8 +471,10 @@ class Theme_Blvd_Sidebar_Manager {
 		// Setup sidebar layouts
 		$sidebars = themeblvd_get_sidebar_locations();
 		$sidebar_locations = array( 'floating' => __( 'No Location (Floating Widget Area)', 'theme-blvd-widget-areas' ) );
-		foreach ( $sidebars as $sidebar )
+
+		foreach ( $sidebars as $sidebar ) {
 			$sidebar_locations[$sidebar['location']['id']] = $sidebar['location']['name'];
+		}
 
 		// Setup options array to display form
 		$options = array(
@@ -563,6 +566,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// with whatever custom widget area they want.
 		$custom_sidebars = get_posts('post_type=tb_sidebar&numberposts=-1');
 		$sidebars_select = array( 'default' => ' &#8211; '.__( 'No Override', 'theme-blvd-widget-areas' ).' &#8211; ');
+
 		foreach ( $custom_sidebars as $sidebar ) {
 			$sidebars_select[$sidebar->post_name] = $sidebar->post_title;
 		}

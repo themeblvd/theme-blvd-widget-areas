@@ -32,7 +32,7 @@ function themeblvd_sidebars_disable_url( $id ) {
 
 	$url = admin_url( $pagenow );
 
-	if( ! empty( $_SERVER['QUERY_STRING'] ) ) {
+	if ( ! empty( $_SERVER['QUERY_STRING'] ) ) {
 		$url .= sprintf( '?%s&nag-ignore=%s', $_SERVER['QUERY_STRING'], 'tb-nag-'.$id );
 	} else {
 		$url .= sprintf( '?nag-ignore=%s', 'tb-nag-'.$id );
@@ -116,7 +116,6 @@ function themeblvd_register_custom_sidebars() {
 	// Register custom sidebars
 	foreach( $custom_sidebars as $sidebar ) {
 
-		// Setup arguments for register_sidebar()
 		$args = array(
 			'name' 			=> __( 'Custom', 'theme-blvd-widget-areas' ).': '.$sidebar->post_title,
 		    'id' 			=> $sidebar->post_name,
@@ -125,7 +124,9 @@ function themeblvd_register_custom_sidebars() {
 			'before_title' 	=> '<h3 class="widget-title">',
 			'after_title' 	=> '</h3>'
 		);
+
 		$location = get_post_meta( $sidebar->ID, 'location', true );
+
 		if ( $location && $location != 'floating' ) {
 			$args['description'] = sprintf( __( 'This is a custom widget area to replace the %s on its assigned pages.', 'theme-blvd-widget-areas' ), themeblvd_get_sidebar_location_name( $location ) );
 		} else {
