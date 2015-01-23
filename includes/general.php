@@ -243,16 +243,30 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 				}
 			}
 
-			// Category
+			// Category archive
 			if ( $assignment['type'] == 'category' ) {
 				if ( is_category( $assignment['id'] ) ) {
 					$id = $assignment['post_slug'];
 				}
 			}
 
-			// Tag
+			// Tag archive
 			if ( $assignment['type'] == 'tag') {
 				if ( is_tag( $assignment['id'] ) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
+			// Product category archive
+			if ( $assignment['type'] == 'product_cat' ) {
+				if ( is_tax('product_cat', $assignment['id']) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
+			// Product tag archive
+			if ( $assignment['type'] == 'product_tag' ) {
+				if ( is_tax('product_tag', $assignment['id']) ) {
 					$id = $assignment['post_slug'];
 				}
 			}
@@ -278,6 +292,13 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 				}
 			}
 
+			// Products in Category
+			if ( $assignment['type'] == 'products_in_cat' ) {
+				if ( is_single() && has_term( $assignment['id'], 'product_cat' ) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
 			// Custom conditional
 			if ( $assignment['type'] == 'custom' ) {
 				$process = 'if ('.htmlspecialchars_decode($assignment['id']).') $id = $assignment["post_slug"];';
@@ -295,6 +316,59 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 	}
 
 	// Tier III conditionals
+	foreach( $assignments as $assignment ) {
+		if ( $assignment['type'] == 'woocommerce_top' ) {
+			switch( $assignment['id'] ) {
+
+				// All WooCommerce - shop, search, archives, and pages
+				case 'woocommerce' :
+					if ( function_exists('is_woocommerce') ) {
+						if ( is_woocommerce() || is_cart() || is_checkout() || is_account_page() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All products
+				case 'products' :
+					if ( is_singular('product') ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// All product category archives
+				case 'product_cat' :
+					if ( is_tax('product_cat') ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// All product tag archives
+				case 'product_tag' :
+					if ( is_tax('product_tag') ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// Product search
+				case 'product_search' :
+					if ( function_exists('is_woocommerce') ) {
+						if ( is_woocommerce() && is_search() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+			}
+
+			// Extend Tier III
+			$id = apply_filters( 'themeblvd_sidebar_id_tier_3', $id, $assignment );
+		}
+	}
+
+
+
+	// Tier IV conditionals
 	foreach( $assignments as $assignment ) {
 		if ( $assignment['type'] == 'top' ) {
 			switch( $assignment['id'] ) {
@@ -364,8 +438,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 
 			} // End switch $assignment['id']
 
-			// Extend Tier III
-			$id = apply_filters( 'themeblvd_sidebar_id_tier_3', $id, $assignment );
+			// Extend Tier IV
+			$id = apply_filters( 'themeblvd_sidebar_id_tier_4', $id, $assignment );
 		}
 	}
 	return $id;

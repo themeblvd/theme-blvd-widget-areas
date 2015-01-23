@@ -37,6 +37,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.4 =
 
+* Added WooCommerce support (for framework 2.5+ themes).
+
 = 1.2.3 =
 
 * Minor security fix.
