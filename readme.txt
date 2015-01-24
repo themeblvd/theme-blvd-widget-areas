@@ -37,7 +37,9 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.4 =
 
-* Added WooCommerce support (for framework 2.5+ themes).
+* Added [WooCommerce](https://wordpress.org/plugins/woocommerce/) support (for framework 2.5+ themes).
+* Added [bbPress](https://wordpress.org/plugins/bbpress/) support (for framework 2.5+ themes).
+* Added [Theme Blvd Portfolios](https://wordpress.org/plugins/portfolios/) support (for framework 2.5+ themes).
 
 = 1.2.3 =
 

@@ -237,7 +237,7 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			}
 
 			// Post
-			if ( $assignment['type'] == 'post' ) {
+			if ( $assignment['type'] == 'post' || $assignment['type'] == 'portfolio_item' ) {
 				if ( is_single( $assignment['id'] ) ) {
 					$id = $assignment['post_slug'];
 				}
@@ -257,6 +257,20 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 				}
 			}
 
+			// Portfolio archive
+			if ( $assignment['type'] == 'portfolio' ) {
+				if ( is_tax('portfolio', $assignment['id']) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
+			// Portfolio tag archive
+			if ( $assignment['type'] == 'portfolio_tag' ) {
+				if ( is_tax('portfolio_tag', $assignment['id']) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
 			// Product category archive
 			if ( $assignment['type'] == 'product_cat' ) {
 				if ( is_tax('product_cat', $assignment['id']) ) {
@@ -268,6 +282,24 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			if ( $assignment['type'] == 'product_tag' ) {
 				if ( is_tax('product_tag', $assignment['id']) ) {
 					$id = $assignment['post_slug'];
+				}
+			}
+
+			// Forum or topic within that forum
+			if ( $assignment['type'] == 'forum' ) {
+				if ( is_single($assignment['id']) ) {
+
+					$id = $assignment['post_slug'];
+
+				} else if ( is_singular( array('topic') ) ) {
+
+					$forum_id = get_post_meta( get_the_ID(), '_bbp_forum_id', true );
+					$post = get_post($forum_id);
+
+					if ( $post && $post->post_name == $assignment['id'] ) {
+						$id = $assignment['post_slug'];
+					}
+
 				}
 			}
 
@@ -285,14 +317,21 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 	foreach( $assignments as $assignment ) {
 		if ( $assignment['type'] != 'top' ) {
 
-			// Posts in Category
+			// Posts in category
 			if ( $assignment['type'] == 'posts_in_category' ) {
 				if ( is_single() && in_category( $assignment['id'] ) ) {
 					$id = $assignment['post_slug'];
 				}
 			}
 
-			// Products in Category
+			// Portfolio items in portfolio
+			if ( $assignment['type'] == 'portfolio_items_in_portfolio' ) {
+				if ( is_single() && has_term( $assignment['id'], 'portfolio' ) ) {
+					$id = $assignment['post_slug'];
+				}
+			}
+
+			// Products in category
 			if ( $assignment['type'] == 'products_in_cat' ) {
 				if ( is_single() && has_term( $assignment['id'], 'product_cat' ) ) {
 					$id = $assignment['post_slug'];
@@ -317,15 +356,34 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 
 	// Tier III conditionals
 	foreach( $assignments as $assignment ) {
-		if ( $assignment['type'] == 'woocommerce_top' ) {
+		if ( strpos($assignment['type'], '_top') !== false ) {
 			switch( $assignment['id'] ) {
 
-				// All WooCommerce - shop, search, archives, and pages
-				case 'woocommerce' :
-					if ( function_exists('is_woocommerce') ) {
-						if ( is_woocommerce() || is_cart() || is_checkout() || is_account_page() ) {
-							$id = $assignment['post_slug'];
-						}
+				// Standard posts
+				case 'blog_posts' :
+					if ( is_singular( array('post') ) ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// Portfolio items
+				case 'portfolio_items' :
+					if ( is_singular( array('portfolio_item') ) ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// Portfolio archives
+				case 'portfolios' :
+					if ( is_tax('portfolio') ) {
+						$id = $assignment['post_slug'];
+					}
+					break;
+
+				// Portfolio tag archives
+				case 'portfolio_tags' :
+					if ( is_tax('portfolio_tag') ) {
+						$id = $assignment['post_slug'];
 					}
 					break;
 
@@ -359,6 +417,51 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 					}
 					break;
 
+				// All single topics
+				case 'topic' :
+					if ( function_exists('bbp_is_single_topic') ) {
+						if ( bbp_is_single_topic() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All single forums
+				case 'forum' :
+					if ( function_exists('bbp_is_single_forum') ) {
+						if ( bbp_is_single_forum() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All forum archives
+				case 'topic_tag' :
+					if ( function_exists('bbp_is_topic_tag') ) {
+						if ( bbp_is_topic_tag() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All forum archives
+				case 'forum_user' :
+					if ( function_exists('bbp_is_single_user') ) {
+						if ( bbp_is_single_user() && ! bbp_is_user_home() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All forum archives
+				case 'forum_user_home' :
+					if ( function_exists('bbp_is_user_home') ) {
+						if ( bbp_is_user_home() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
 			}
 
 			// Extend Tier III
@@ -366,9 +469,37 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 		}
 	}
 
-
-
 	// Tier IV conditionals
+	foreach( $assignments as $assignment ) {
+		if ( strpos($assignment['type'], '_top') !== false ) {
+			switch( $assignment['id'] ) {
+
+				// All WooCommerce - shop, search, archives, and pages
+				case 'woocommerce' :
+					if ( function_exists('is_woocommerce') ) {
+						if ( is_woocommerce() || is_cart() || is_checkout() || is_account_page() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+				// All bbPress
+				case 'bbpress' :
+					if ( function_exists('is_bbpress') ) {
+						if ( is_bbpress() ) {
+							$id = $assignment['post_slug'];
+						}
+					}
+					break;
+
+			} // End switch $assignment['id']
+
+			// Extend Tier IV
+			$id = apply_filters( 'themeblvd_sidebar_id_tier_4', $id, $assignment );
+		}
+	}
+
+	// Tier V conditionals
 	foreach( $assignments as $assignment ) {
 		if ( $assignment['type'] == 'top' ) {
 			switch( $assignment['id'] ) {
@@ -438,8 +569,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 
 			} // End switch $assignment['id']
 
-			// Extend Tier IV
-			$id = apply_filters( 'themeblvd_sidebar_id_tier_4', $id, $assignment );
+			// Extend Tier V
+			$id = apply_filters( 'themeblvd_sidebar_id_tier_5', $id, $assignment );
 		}
 	}
 	return $id;
