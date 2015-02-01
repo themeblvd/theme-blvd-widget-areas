@@ -356,7 +356,7 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 
 	// Tier III conditionals
 	foreach( $assignments as $assignment ) {
-		if ( strpos($assignment['type'], '_top') !== false ) {
+		if ( strpos($assignment['type'], '_top') !== false || $assignment['type'] == 'top' ) {
 			switch( $assignment['id'] ) {
 
 				// Standard posts
