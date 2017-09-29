@@ -35,9 +35,9 @@ Custom widget areas have two attributes to understand when being setup.
 
 == Changelog ==
 
-= 1.2.5 =
+= 1.2.5 - 09/29/2017 =
 
-= 1.2.4 =
+= 1.2.4 - 01/31/2015 =
 
 * Added [WooCommerce](https://wordpress.org/plugins/woocommerce/) support (for framework 2.5+ themes).
 * Added [bbPress](https://wordpress.org/plugins/bbpress/) support (for framework 2.5+ themes).
@@ -45,49 +45,49 @@ Custom widget areas have two attributes to understand when being setup.
 
 *Note: For you Jump Start 2.0 beta testers, these changes will only work with Jump Start 2.0-beta3+*
 
-= 1.2.3 =
+= 1.2.3 - 09/09/2014 =
 
 * Minor security fix.
 
-= 1.2.2 =
+= 1.2.2 - 11/16/2014 =
 
 * Compatibility for servers still running PHP 5.2 for last update’s edits.
 
-= 1.2.1 =
+= 1.2.1 - 11/15/2014 =
 
 * Fixed some admin page styling quirks.
 * When widget area is created from Edit Page screen, it's now initially set to `floating`.
 * GlotPress compatibility (for 2015 wordpress.org release).
 
-= 1.2.0 =
+= 1.2.0 - 02/17/2014 =
 
 * Admin style updates for WordPress 3.8 and MP6 (requires Theme Blvd framework v2.4+).
 * Fixed bug with not being able to use `&&` operator in custom conditionals.
 
-= 1.1.5 =
+= 1.1.5 - 11/07/2013 =
 
 * Removed deprecated media uploader script.
 
-= 1.1.4 =
+= 1.1.4 - 09/20/2013 =
 
 * Admin jQuery improvements for 1.9 - Converted all .live() to .on()
 
-= 1.1.3 =
+= 1.1.3 - 06/06/2013 =
 
 * Fixed "Dismiss" link not working for notices on some admin pages.
 * Fixed any conflicts when activated with [Theme Blvd Bundle](http://wordpress.org/extend/plugins/theme-blvd-bundle).
 
-= 1.1.2 =
+= 1.1.2 - 05/30/2013 =
 
 * Some minor admin javascript improvements.
 * Added fix for rare PHP warning resulting from `_tb_sidebars` meta not being saved properly.
 * Added `themeblvd_sidebars_post_type_args` filter on registered `tb_sidebar` post type's `$args`.
 
-= 1.1.1 =
+= 1.1.1 - 05/16/2013 =
 
 * Added `themeblvd_custom_sidebar_args` filter.
 
-= 1.1.0 =
+= 1.1.0 - 03/22/2013 =
 
 * Added "Sidebar Overrides" meta box so custom sidebars can be applied
 while editing posts and pages directly.
@@ -96,6 +96,6 @@ while editing posts and pages directly.
 queries roughly 6 to 1.
 * Update requires Theme Blvd framework v2.2.1+.
 
-= 1.0.0 =
+= 1.0.0 - 09/06/2012 =
 
 * This is the first release.
