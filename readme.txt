@@ -45,8 +45,6 @@ Custom widget areas have two attributes to understand when being setup.
 * Added [bbPress](https://wordpress.org/plugins/bbpress/) support (for framework 2.5+ themes).
 * Added [Theme Blvd Portfolios](https://wordpress.org/plugins/portfolios/) support (for framework 2.5+ themes).
 
-*Note: For you Jump Start 2.0 beta testers, these changes will only work with Jump Start 2.0-beta3+*
-
 = 1.2.3 - 09/09/2014 =
 
 * Minor security fix.
