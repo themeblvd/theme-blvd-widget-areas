@@ -37,6 +37,8 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.5 - 09/29/2017 =
 
+* Code formatting improvements to pass [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
+
 = 1.2.4 - 01/31/2015 =
 
 * Added [WooCommerce](https://wordpress.org/plugins/woocommerce/) support (for framework 2.5+ themes).

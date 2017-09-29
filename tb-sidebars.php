@@ -46,35 +46,38 @@ function themeblvd_sidebars_init() {
 
 	global $_themeblvd_sidebar_manager;
 
-	// Include general functions
 	include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/general.php' );
 
-	// Check for disable of the admin nag
 	add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
 
-	// Check to make sure Theme Blvd Framework 2.2+ is running
-	if( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
+	if ( ! defined( 'TB_FRAMEWORK_VERSION' ) || version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '<' ) ) {
+
 		add_action( 'admin_notices', 'themeblvd_sidebars_warning' );
+
 		return;
+
 	}
 
-	// If using framework v2.2.0, tell them they should now update to 2.2.1
-	if( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
+	if ( version_compare( TB_FRAMEWORK_VERSION, '2.2.0', '=' ) ) {
+
 		add_action( 'admin_notices', 'themeblvd_sidebars_warning_2' );
+
 	}
 
-	// General actions and filters
 	add_action( 'init', 'themeblvd_sidebars_register_post_type' );
-	add_action( 'widgets_init', 'themeblvd_register_custom_sidebars', 11 ); // Hooked directly after theme framework's sidebar registration
-	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id', 10, 3 ); // This filter happens in the theme framework's themeblvd_frontend_init()
 
-	// Admin files, actions, and filters
-	if( is_admin() ){
-		// Check to make sure admin interface isn't set to be
-		// hidden and for the appropriate user capability
+	add_action( 'widgets_init', 'themeblvd_register_custom_sidebars', 11 ); // Hooked directly after theme framework's sidebar registration.
+
+	add_filter( 'themeblvd_custom_sidebar_id', 'themeblvd_get_sidebar_id', 10, 3 ); // This filter happens in the theme framework's themeblvd_frontend_init().
+
+	if ( is_admin() ) {
+
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
+
 			include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-tb-sidebar-manager.php' );
+
 			$_themeblvd_sidebar_manager = new Theme_Blvd_Sidebar_Manager();
+
 		}
 	}
 }
@@ -86,6 +89,8 @@ add_action( 'after_setup_theme', 'themeblvd_sidebars_init' );
  * @since 1.2.1
  */
 function themeblvd_sidebars_localize() {
-	load_plugin_textdomain('theme-blvd-widget-areas');
+
+	load_plugin_textdomain( 'theme-blvd-widget-areas' );
+
 }
-add_action('init', 'themeblvd_sidebars_localize');
+add_action( 'init', 'themeblvd_sidebars_localize' );
