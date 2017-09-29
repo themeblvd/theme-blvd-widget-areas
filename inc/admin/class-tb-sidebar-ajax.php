@@ -1,5 +1,14 @@
 <?php
 /**
+ * Meta Box: Sidebar Manager, Ajax functionality
+ *
+ * @author     Jason Bobich <info@themeblvd.com>
+ * @copyright  2009-2017 Theme Blvd
+ * @package    Theme Blvd Widget Areas
+ * @since      1.0.0
+ */
+
+/**
  * Sidebar Manager Ajax
  */
 class Theme_Blvd_Sidebar_Ajax {

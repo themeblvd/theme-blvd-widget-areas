@@ -1,5 +1,14 @@
 <?php
 /**
+ * General plugin functions.
+ *
+ * @author     Jason Bobich <info@themeblvd.com>
+ * @copyright  2009-2017 Theme Blvd
+ * @package    Theme Blvd Widget Areas
+ * @since      1.0.0
+ */
+
+/**
  * Disable a nag message.
  *
  * @since 1.1.0
