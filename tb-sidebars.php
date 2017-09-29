@@ -47,7 +47,7 @@ function themeblvd_sidebars_init() {
 	global $_themeblvd_sidebar_manager;
 
 	// Include general functions
-	include_once( TB_SIDEBARS_PLUGIN_DIR . '/includes/general.php' );
+	include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/general.php' );
 
 	// Check for disable of the admin nag
 	add_action( 'admin_init', 'themeblvd_sidebars_disable_nag' );
@@ -73,7 +73,7 @@ function themeblvd_sidebars_init() {
 		// Check to make sure admin interface isn't set to be
 		// hidden and for the appropriate user capability
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/includes/admin/class-tb-sidebar-manager.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-tb-sidebar-manager.php' );
 			$_themeblvd_sidebar_manager = new Theme_Blvd_Sidebar_Manager();
 		}
 	}
@@ -89,9 +89,3 @@ function themeblvd_sidebars_localize() {
 	load_plugin_textdomain('theme-blvd-widget-areas');
 }
 add_action('init', 'themeblvd_sidebars_localize');
-
-/* Requires PHP 5.3+
-add_action( 'init', function() {
-	load_plugin_textdomain('theme-blvd-widget-areas');
-} );
-*/

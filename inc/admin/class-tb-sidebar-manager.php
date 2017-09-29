@@ -20,7 +20,7 @@ class Theme_Blvd_Sidebar_Manager {
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 
 		// Add ajax functionality to sidebar admin page
-		include_once( TB_SIDEBARS_PLUGIN_DIR . '/includes/admin/class-tb-sidebar-ajax.php' );
+		include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-tb-sidebar-ajax.php' );
 		$ajax = new Theme_Blvd_Sidebar_Ajax( $this );
 
 		// Add meta box
@@ -127,7 +127,7 @@ class Theme_Blvd_Sidebar_Manager {
 		wp_enqueue_style( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/css/admin-style.min.css', null, TB_FRAMEWORK_VERSION );
 
 		if ( $current->base == 'appearance_page_themeblvd_widget_areas' || $pagenow == 'post-new.php' || $pagenow == 'post.php' ) {
-			wp_enqueue_style( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
+			wp_enqueue_style( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/inc/admin/assets/css/sidebars.min.css', null, TB_SIDEBARS_PLUGIN_VERSION );
 		}
 	}
 
@@ -143,7 +143,7 @@ class Theme_Blvd_Sidebar_Manager {
 		// Theme Blvd scripts
 		wp_enqueue_script( 'themeblvd_admin', TB_FRAMEWORK_URI . '/admin/assets/js/shared.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
 		wp_enqueue_script( 'themeblvd_options', TB_FRAMEWORK_URI . '/admin/options/js/options.min.js', array('jquery'), TB_FRAMEWORK_VERSION );
-		wp_enqueue_script( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/includes/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
+		wp_enqueue_script( 'theme-blvd-widget-areas', TB_SIDEBARS_PLUGIN_URI . '/inc/admin/assets/js/sidebars.min.js', array('jquery'), TB_SIDEBARS_PLUGIN_VERSION );
 
 		// Add JS locals. Not needed for Edit Page screen, already exists.
 		if ( $pagenow != 'post-new.php' && $pagenow != 'post.php' ) {
