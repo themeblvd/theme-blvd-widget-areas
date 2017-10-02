@@ -117,6 +117,8 @@ function themeblvd_sidebars_register_post_type() {
 	 * Filters the arguments used to register the post type
 	 * for custom widget areas created by the end-user.
 	 *
+	 * @since 1.0.0
+	 *
 	 * @param array Arguments passed to register_post_type().
 	 */
 	$args = apply_filters( 'themeblvd_sidebars_post_type_args', array(
@@ -178,11 +180,26 @@ function themeblvd_register_custom_sidebars() {
 		 * Filters the arguments used to register a custom
 		 * widget areas.
 		 *
+		 * @since 1.1.1
+		 *
 		 * @param array   $args     Arguments passed to register_sidebar().
 		 * @param WP_Post $sidebar  Post object for the custom sidebar.
 		 * @param string  $location Name of location where custom sidebar is assigned.
 		 */
 		$args = apply_filters( 'themeblvd_custom_sidebar_args', $args, $sidebar, $location );
+
+		/**
+		 * Filters the arguments used in registering
+		 * all widget area, default and custom.
+		 *
+		 * Note: This same filter is also used in the Theme
+		 * Blvd theme framework, for default widget areas.
+		 *
+		 * @param array   $args     Arguments passed to register_sidebar().
+		 * @param WP_Post $sidebar  Post object for the custom sidebar.
+		 * @param string  $location ID of widget area being registered.
+		 */
+		$args = apply_filters( 'themeblvd_sidebar_args', $args, $sidebar, $location );
 
 		register_sidebar( $args );
 
@@ -377,6 +394,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			 * back with ID. Otherwise leave $id empty, and then
 			 * the process will move to the next tier of checks.
 			 *
+			 * @since 1.0.0
+			 *
 			 * @param string $id         The ID of the element to return, like the ID of a post, or the slug of a tag.
 			 * @param array  $assignment Current assignment being checked.
 			 */
@@ -433,6 +452,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			 * If your conditional is a match return the sidebar ID
 			 * back with ID. Otherwise leave $id empty, and then
 			 * the process will move to the next tier of checks.
+			 *
+			 * @since 1.0.0
 			 *
 			 * @param string $id         The ID of the element to return, like the ID of a post, or the slug of a tag.
 			 * @param array  $assignment Current assignment being checked.
@@ -571,6 +592,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			 * back with ID. Otherwise leave $id empty, and then
 			 * the process will move to the next tier of checks.
 			 *
+			 * @since 1.0.0
+			 *
 			 * @param string $id         The ID of the element to return, like the ID of a post, or the slug of a tag.
 			 * @param array  $assignment Current assignment being checked.
 			 */
@@ -615,6 +638,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			 * If your conditional is a match return the sidebar ID
 			 * back with ID. Otherwise leave $id empty, and then
 			 * the process will move to the next tier of checks.
+			 *
+			 * @since 1.0.0
 			 *
 			 * @param string $id         The ID of the element to return, like the ID of a post, or the slug of a tag.
 			 * @param array  $assignment Current assignment being checked.
@@ -704,6 +729,8 @@ function themeblvd_get_assigned_id( $location, $assignments ) {
 			 *
 			 * If your conditional is a match return the sidebar ID
 			 * back with ID.
+			 *
+			 * @since 1.0.0
 			 *
 			 * @param string $id         The ID of the element to return, like the ID of a post, or the slug of a tag.
 			 * @param array  $assignment Current assignment being checked.

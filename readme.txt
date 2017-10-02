@@ -39,6 +39,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 * Fixed minor styling quirk with "Add Sidebar" title of "Sidebar Overrides" meta box.
 * Code formatting improvements to pass [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
+* Added filter `themeblvd_sidebar_args` which is shared with theme framework (for framework 2.7+ themes); this filters arguments passed to `register_sidebar()` for custom and theme widget areas.
 
 = 1.2.4 - 01/31/2015 =
 
