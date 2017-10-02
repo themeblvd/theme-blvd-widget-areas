@@ -213,4 +213,6 @@
 #tb_sidebars.postbox .inside h3 {
 	background: #f5f5f5;
 	border-bottom: 1px solid #dfdfdf;
+	margin: 0;
+    padding: 20px;
 }

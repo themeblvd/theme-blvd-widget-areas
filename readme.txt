@@ -37,6 +37,7 @@ Custom widget areas have two attributes to understand when being setup.
 
 = 1.2.5 - 09/29/2017 =
 
+* Fixed minor styling quirk with "Add Sidebar" title of "Sidebar Overrides" meta box.
 * Code formatting improvements to pass [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards).
 
 = 1.2.4 - 01/31/2015 =
