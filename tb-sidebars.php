@@ -74,7 +74,7 @@ function themeblvd_sidebars_init() {
 
 		if ( themeblvd_supports( 'admin', 'sidebars' ) && current_user_can( themeblvd_admin_module_cap( 'sidebars' ) ) ) {
 
-			include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-tb-sidebar-manager.php' );
+			include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-theme-blvd-sidebar-manager.php' );
 
 			$_themeblvd_sidebar_manager = new Theme_Blvd_Sidebar_Manager();
 

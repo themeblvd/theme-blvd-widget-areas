@@ -38,7 +38,7 @@ class Theme_Blvd_Sidebar_Manager {
 		add_filter( 'themeblvd_locals_js', array( $this, 'add_js_locals' ) );
 
 		// Add ajax functionality to sidebar admin page.
-		include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-tb-sidebar-ajax.php' );
+		include_once( TB_SIDEBARS_PLUGIN_DIR . '/inc/admin/class-theme-blvd-sidebar-ajax.php' );
 
 		$ajax = new Theme_Blvd_Sidebar_Ajax( $this );
 
