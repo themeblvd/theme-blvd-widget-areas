@@ -50,7 +50,7 @@
 
 /* Loader */
 #tb_sidebars.postbox .tb-loader {
-	background: #ffffff url(../images/loader_48.gif) no-repeat;
+	background: #ffffff url(../img/loader_48.gif) no-repeat;
 	background-size: 20px 20px;
 	display:none;
 	position: absolute;
