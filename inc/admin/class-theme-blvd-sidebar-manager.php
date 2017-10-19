@@ -91,10 +91,10 @@ class Theme_Blvd_Sidebar_Manager {
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param array Arguments passed to add_meta_box.
+		 * @param array Arguments passed to `add_meta_box()`.
 		 */
 		$args = apply_filters( 'themeblvd_sidebar_meta_box', array(
-			'id'        => 'tb_sidebars',
+			'id'        => 'tb-sidebars-meta-box',
 			'name'      => __( 'Sidebar Overrides', 'theme-blvd-widget-areas' ),
 			'callback'  => array( $this, 'meta_box' ),
 			'post_type' => array( 'page', 'post' ), // Filter to null, to stop the meta box from being added.
@@ -159,28 +159,78 @@ class Theme_Blvd_Sidebar_Manager {
 
 		$screen = get_current_screen();
 
-		$screens = array(
-			'appearance_page_themeblvd_widget_areas',
-			'post'
-		);
+		$sidebar_screen = 'appearance_page_themeblvd_widget_areas';
 
-		if ( in_array( $screen->base, $screens ) ) {
+		$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-			$suffix = SCRIPT_DEBUG ? '' : '.min';
+		/*
+		 * For the Sidebar Manager page at Appearance > Widget
+		 * Areas, we need to enqueue all framework admin assets.
+		 */
+		if ( $sidebar_screen === $screen->base ) {
 
-			wp_enqueue_style(
-				'themeblvd_admin',
-				esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/assets/css/admin-style{$suffix}.css" ),
-				null,
-				TB_FRAMEWORK_VERSION
-			);
+			if ( function_exists( 'themeblvd_admin_assets' ) ) {
 
-			wp_enqueue_style(
-				'themeblvd_options',
-				esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/options/css/admin-style{$suffix}.css" ),
-				null,
-				TB_FRAMEWORK_VERSION
-			);
+				themeblvd_admin_assets();
+
+				wp_enqueue_style(
+					'themeblvd-admin-options-page',
+					esc_url( TB_FRAMEWORK_URI . "/admin/assets/css/options-page{$suffix}.css" ),
+					null,
+					TB_FRAMEWORK_VERSION
+				);
+
+				wp_enqueue_script(
+					'themeblvd-admin-options-page',
+					esc_url( TB_FRAMEWORK_URI . "/admin/assets/js/options-page{$suffix}.js" ),
+					array( 'jquery' ),
+					TB_FRAMEWORK_VERSION
+				);
+
+			} else {
+
+				/*
+				 * Legacy enqueue assets.
+				 *
+				 * The following is @deprecated as of framework 2.7.0.
+				 */
+				wp_enqueue_style(
+					'themeblvd_admin',
+					esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/assets/css/admin-style{$suffix}.css" ),
+					null,
+					TB_FRAMEWORK_VERSION
+				);
+
+				wp_enqueue_style(
+					'themeblvd_options',
+					esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/options/css/admin-style{$suffix}.css" ),
+					null,
+					TB_FRAMEWORK_VERSION
+				);
+
+				wp_enqueue_script(
+					'themeblvd_admin',
+					esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/assets/js/shared{$suffix}.js" ),
+					array( 'jquery' ),
+					TB_FRAMEWORK_VERSION
+				);
+
+				wp_enqueue_script(
+					'themeblvd_options',
+					esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/options/js/options{$suffix}.js" ),
+					array( 'jquery' ),
+					TB_FRAMEWORK_VERSION
+				);
+
+			}
+
+		}
+
+		/*
+		 * And for the Sidebar Manager page AND the post edit
+		 * screens, we need to enqueue out plugin's assets.
+		 */
+		if ( in_array( $screen->base, array( $sidebar_screen, 'post' ) ) ) {
 
 			wp_enqueue_style(
 				'theme-blvd-widget-areas',
@@ -190,29 +240,35 @@ class Theme_Blvd_Sidebar_Manager {
 			);
 
 			wp_enqueue_script(
-				'themeblvd_admin',
-				esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/assets/js/shared{$suffix}.js" ),
-				array( 'jquery' ),
-				TB_FRAMEWORK_VERSION
-			);
-
-			wp_enqueue_script(
-				'themeblvd_options',
-				esc_url( trailingslashit( TB_FRAMEWORK_URI ) . "admin/options/js/options{$suffix}.js" ),
-				array( 'jquery' ),
-				TB_FRAMEWORK_VERSION
-			);
-
-			wp_enqueue_script(
 				'theme-blvd-widget-areas',
 				esc_url( trailingslashit( TB_SIDEBARS_PLUGIN_URI ) . "inc/admin/assets/js/sidebars{$suffix}.js" ),
 				array( 'jquery' ),
 				TB_SIDEBARS_PLUGIN_VERSION
 			);
 
-			wp_localize_script( 'theme-blvd-widget-areas', 'themeblvd', themeblvd_get_admin_locals( 'js' ) );
+		}
+
+		/*
+		 * And finally, only if we're on the Sidebar Manager
+		 * page, we need to make sure our L10n text strings
+		 * are present.
+		 */
+		if ( $sidebar_screen === $screen->base ) {
+
+			$handle = 'theme-blvd-utilities';
+
+			if ( version_compare( TB_FRAMEWORK_VERSION, '2.7.0', '<' ) ) {
+				$handle = 'themeblvd_admin'; // @deprecated handle.
+			}
+
+			wp_localize_script(
+				$handle,
+				'themeblvdL10n',
+				themeblvd_get_admin_locals( 'js' )
+			);
 
 		}
+
 	}
 
 	/**
@@ -241,13 +297,13 @@ class Theme_Blvd_Sidebar_Manager {
 	 */
 	public function admin_page() {
 		?>
-		<div id="sidebar_blvd">
-			<div id="optionsframework" class="wrap tb-options-js">
+		<div id="sidebar_blvd" class="tb-options-page">
+			<div id="optionsframework" class="wrap tb-options-wrap tb-options-js">
 
 				<div class="admin-module-header">
 					<?php do_action( 'themeblvd_admin_module_header', 'sidebars' ); ?>
 				</div>
-				<?php screen_icon( 'themes' ); ?>
+
 				<h2 class="nav-tab-wrapper">
 					<a href="#manage_sidebars" id="manage_sidebars-tab" class="nav-tab" title="<?php _e( 'Custom Widget Areas', 'theme-blvd-widget-areas' ); ?>"><?php _e( 'Custom Widget Areas', 'theme-blvd-widget-areas' ); ?></a>
 					<a href="#add_sidebar" id="add_sidebar-tab" class="nav-tab" title="<?php _e( 'Add New', 'theme-blvd-widget-areas' ); ?>"><?php _e( 'Add New', 'theme-blvd-widget-areas' ); ?></a>
@@ -256,12 +312,12 @@ class Theme_Blvd_Sidebar_Manager {
 
 				<!-- MANAGE SIDEBARS (start) -->
 
-				<div id="manage_sidebars" class="group">
+				<div id="manage_sidebars" class="group hide">
 					<form id="manage_current_sidebars">
 						<?php
-						$manage_nonce = wp_create_nonce( 'themeblvd_manage_sidebars' );
+						$manage_nonce = wp_create_nonce( 'themeblvd-manage-sidebars' );
 
-						echo '<input type="hidden" name="option_page" value="themeblvd_manage_sidebars" />';
+						echo '<input type="hidden" name="option_page" value="themeblvd-manage-sidebars" />';
 
 						echo '<input type="hidden" name="_wpnonce" value="' . $manage_nonce . '" />';
 						?>
@@ -273,12 +329,12 @@ class Theme_Blvd_Sidebar_Manager {
 
 				<!-- ADD SIDEBAR (start) -->
 
-				<div id="add_sidebar" class="group">
+				<div id="add_sidebar" class="group hide">
 					<form id="add_new_sidebar">
 						<?php
-						$add_nonce = wp_create_nonce( 'themeblvd_new_sidebar' );
+						$add_nonce = wp_create_nonce( 'themeblvd-add-sidebar' );
 
-						echo '<input type="hidden" name="option_page" value="themeblvd_new_sidebar" />';
+						echo '<input type="hidden" name="option_page" value="themeblvd-add-sidebar" />';
 
 						echo '<input type="hidden" name="_wpnonce" value="' . $add_nonce . '" />';
 
@@ -291,15 +347,15 @@ class Theme_Blvd_Sidebar_Manager {
 
 				<!-- EDIT SIDEBAR (start) -->
 
-				<div id="edit_sidebar" class="group">
+				<div id="edit_sidebar" class="group hide">
 					<form id="edit_current_sidebar" method="post">
 						<?php
 
-						$edit_nonce = wp_create_nonce( 'themeblvd_save_sidebar' );
+						$edit_nonce = wp_create_nonce( 'themeblvd-save-sidebar' );
 
 						echo '<input type="hidden" name="action" value="update" />';
 
-						echo '<input type="hidden" name="option_page" value="themeblvd_save_sidebar" />';
+						echo '<input type="hidden" name="option_page" value="themeblvd-save-sidebar" />';
 
 						echo '<input type="hidden" name="_wpnonce" value="' . $edit_nonce . '" />';
 						?>
@@ -313,7 +369,7 @@ class Theme_Blvd_Sidebar_Manager {
 					<?php do_action( 'themeblvd_admin_module_footer', 'sidebars' ); ?>
 				</div>
 
-			</div><!-- #optionsframework (end) -->
+			</div><!-- .tb-options-wrap.tb-options-js (end) -->
 		</div><!-- #sidebar_blvd (end) -->
 		<?php
 	}
@@ -326,7 +382,7 @@ class Theme_Blvd_Sidebar_Manager {
 	public function meta_box() {
 		?>
 		<div id="sidebar_blvd">
-			<div id="optionsframework" class="tb-options-js">
+			<div id="optionsframework" class="tb-options-wrap tb-options-js">
 
 				<!-- HEADER (start) -->
 
@@ -336,13 +392,12 @@ class Theme_Blvd_Sidebar_Manager {
 						<div class="icon-holder">
 							<span class="tb-loader ajax-loading"></span>
 							<span class="tb-sidebar-override-icon"></span>
-							<?php screen_icon( 'themes' ); ?>
 						</div>
 						<span class="note"><?php _e( 'Select any custom sidebars you\'d like applied to this page.', 'theme-blvd-widget-areas' ); ?></span>
 					</div>
 					<ul>
-						<li><a href="#override_sidebars"><?php _e( 'Assign Overrides', 'theme-blvd-widget-areas' ); ?></a></li>
-						<li><a href="#add_sidebar"><?php _e( 'Add Sidebar', 'theme-blvd-widget-areas' ); ?></a></li>
+						<li><a href="#tb-override-sidebar"><?php esc_html_e( 'Assign Overrides', 'theme-blvd-widget-areas' ); ?></a></li>
+						<li><a href="#tb-add-sidebar"><?php esc_html_e( 'Add Sidebar', 'theme-blvd-widget-areas' ); ?></a></li>
 					</ul>
 					<div class="clear"></div>
 				</div><!-- .meta-box-nav (end) -->
@@ -351,7 +406,7 @@ class Theme_Blvd_Sidebar_Manager {
 
 				<!-- ASSIGN OVERRIDES (start) -->
 
-				<div id="override_sidebars" class="group">
+				<div id="tb-override-sidebar" class="group">
 					<div class="ajax-mitt">
 						<?php $this->sidebar_overrides(); ?>
 					</div><!-- .ajax-mitt (end) -->
@@ -361,13 +416,13 @@ class Theme_Blvd_Sidebar_Manager {
 
 				<!-- ADD NEW (start) -->
 
-				<div id="add_sidebar" class="group">
+				<div id="tb-add-sidebar" class="group">
 					<?php $this->add_sidebar_mini(); ?>
 				</div><!-- #manage (end) -->
 
 				<!-- ADD NEW (end) -->
 
-			</div><!-- #optionsframework (end) -->
+			</div><!-- .tb-options-wrap.tb-options-js (end) -->
 		</div><!-- #builder_blvd (end) -->
 		<?php
 	}
@@ -443,8 +498,8 @@ class Theme_Blvd_Sidebar_Manager {
 			),
 			/* Hiding the true post ID from user to avoid confusion.
 			array(
-				'name' => __( 'ID', 'theme-blvd-widget-areas' ),
-				'type' => 'id',
+			   'name'  => __( 'ID', 'theme-blvd-widget-areas' ),
+			   'type'  => 'id',
 			),
 			*/
 			array(
@@ -518,15 +573,13 @@ class Theme_Blvd_Sidebar_Manager {
 		<div class="metabox-holder">
 			<div class="postbox">
 
-				<h3><?php _e( 'Add New Widget Area', 'theme-blvd-widget-areas' ); ?></h3>
-
 				<form id="add_new_sidebar">
 
 					<div class="inner-group">
 						<?php echo $form[0]; ?>
 					</div><!-- .group (end) -->
 
-					<div id="optionsframework-submit">
+					<div id="optionsframework-submit" class="options-page-footer">
 						<input type="submit" class="button-primary" name="update" value="<?php esc_html_e( 'Add New Widget Area', 'theme-blvd-widget-areas' ); ?>">
 						<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
 						<div class="clear"></div>
@@ -551,7 +604,7 @@ class Theme_Blvd_Sidebar_Manager {
 
 		<div class="section">
 			<div class="add-sidebar-items">
-				<?php $nonce = wp_create_nonce( 'themeblvd_new_sidebar' ); ?>
+				<?php $nonce = wp_create_nonce( 'themeblvd-add-sidebar' ); ?>
 				<input type="hidden" name="_tb_new_sidebar_nonce" value="<?php echo $nonce; ?>" />
 				<input type="text" name="_tb_new_sidebar_name" placeholder="<?php _e( 'New Sidebar Name', 'theme-blvd-widget-areas' ); ?>" />
 				<a href="#" class="new-sidebar-submit button"><?php _e( 'Add Sidebar', 'theme-blvd-widget-areas' ); ?></a>
@@ -659,7 +712,7 @@ class Theme_Blvd_Sidebar_Manager {
 					<?php echo $form[0]; ?>
 				</div><!-- .group (end) -->
 
-				<div id="optionsframework-submit">
+				<div id="optionsframework-submit" class="options-page-footer">
 					<input type="submit" class="button-primary" name="update" value="<?php _e( 'Save Widget Area', 'theme-blvd-widget-areas' ); ?>">
 					<img src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" class="ajax-loading" id="ajax-loading">
 					<div class="clear"></div>

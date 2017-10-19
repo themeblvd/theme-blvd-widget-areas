@@ -5,24 +5,34 @@
 #manage_sidebars .no-conflict {
 	background: none;
 }
+.options-page-footer {
+	border: none;
+	padding: 10px;
+}
+.options-page-footer input {
+	float: right;
+}
+.wp-admin.rtl .options-page-footer input {
+	float: left;
+}
 
 /* =Meta Box (for Edit Page/Post screen)
 ----------------------------------------------- */
 
 /* General */
-#tb_sidebars.postbox .inside {
+#tb-sidebars-meta-box.postbox .inside {
 	margin: 0;
 	padding: 0;
 }
-#tb_sidebars.postbox #sidebar_blvd {
+#tb-sidebars-meta-box.postbox #sidebar_blvd {
 	background: #ffffff;
 	min-height: 450px;
 }
-#tb_sidebars.postbox #optionsframework .metabox-holder {
+#tb-sidebars-meta-box.postbox .tb-options-wrap .metabox-holder {
 	max-width: inherit;
 	padding: 0;
 }
-#tb_sidebars.postbox .postbox {
+#tb-sidebars-meta-box.postbox .postbox {
 	border: none;-moz-border-radius: 0;
 	-webkit-border-radius: 0;
 	border-radius: 0;
@@ -30,26 +40,26 @@
 	-webkit-box-shadow: 0 0 0 #000;
 	box-shadow: 0 0 0 #000;
 }
-#tb_sidebars.postbox h3 {
+#tb-sidebars-meta-box.postbox h3 {
 	cursor: inherit;
 }
-#tb_sidebars.postbox #optionsframework {
+#tb-sidebars-meta-box.postbox .tb-options-wrap {
 	background: #ffffff;
 }
-#tb_sidebars.postbox .warning {
+#tb-sidebars-meta-box.postbox .warning {
 	background: #FFFFE0;
 	border: 1px solid #E6DB55;
 	margin: 10px;
 }
-#tb_sidebars.postbox #tb-alert {
+#tb-sidebars-meta-box.postbox #tb-alert {
 	top: 40px;
 }
-#tb_sidebars.postbox #optionsframework {
+#tb-sidebars-meta-box.postbox .tb-options-wrap {
 	max-width: inherit;
 }
 
 /* Loader */
-#tb_sidebars.postbox .tb-loader {
+#tb-sidebars-meta-box.postbox .tb-loader {
 	background: #ffffff url(../img/loader_48.gif) no-repeat;
 	background-size: 20px 20px;
 	display:none;
@@ -59,7 +69,7 @@
 	visibility: visible;
 	z-index: 4;
 }
-#tb_sidebars.postbox #metabox-builder .tb-loader {
+#tb-sidebars-meta-box.postbox #metabox-builder .tb-loader {
 	background-size: 16px 16px;
 	-moz-border-radius: 99px;
 	-webkit-border-radius: 99px;
@@ -70,23 +80,23 @@
 }
 
 /* Tabs */
-#tb_sidebars.postbox .meta-box-nav {
+#tb-sidebars-meta-box.postbox .meta-box-nav {
 	background: #ffffff;
 	border-bottom: 1px solid #dfdfdf;
 	padding: 8px;
 	position: relative;
 }
-#tb_sidebars.postbox .meta-box-nav .ajax-overlay {
+#tb-sidebars-meta-box.postbox .meta-box-nav .ajax-overlay {
 	z-index: 3;
 }
-#tb_sidebars.postbox .meta-box-nav .icon-holder {
+#tb-sidebars-meta-box.postbox .meta-box-nav .icon-holder {
 	float: left;
 	margin: 5px 8px 0 0;
 	position: relative;
 	width: 20px;
 	height: 20px;
 }
-#tb_sidebars.postbox .meta-box-nav .icon-holder #icon-themes {
+#tb-sidebars-meta-box.postbox .meta-box-nav .icon-holder #icon-themes {
 	background-position: -9px -4px;
 	background-size: 441px 28px;
 	position: absolute;
@@ -95,45 +105,45 @@
 	height: 20px;
 	z-index: 1;
 }
-#tb_sidebars.postbox .meta-box-nav .select-layout {
+#tb-sidebars-meta-box.postbox .meta-box-nav .select-layout {
 	float: left;
 	position: relative;
 }
-#tb_sidebars.postbox .meta-box-nav .tb-fancy-select {
+#tb-sidebars-meta-box.postbox .meta-box-nav .tb-fancy-select {
 	background-position: 0 -2px;
 	float: left;
 	margin: 0;
 }
-#tb_sidebars.postbox .meta-box-nav .tb-fancy-select select {
+#tb-sidebars-meta-box.postbox .meta-box-nav .tb-fancy-select select {
 	height: 28px;
 	min-width: 220px;
 }
-#tb_sidebars.postbox .meta-box-nav .tb-fancy-select .trigger {
+#tb-sidebars-meta-box.postbox .meta-box-nav .tb-fancy-select .trigger {
 	background-position: 0 -2px;
 	height: 28px;
 }
-#tb_sidebars.postbox .meta-box-nav .tb-fancy-select .textbox {
+#tb-sidebars-meta-box.postbox .meta-box-nav .tb-fancy-select .textbox {
 	line-height: 28px;
 }
-#tb_sidebars.postbox .meta-box-nav .select-layout span.note {
+#tb-sidebars-meta-box.postbox .meta-box-nav .select-layout span.note {
 	float: left;
 	line-height: 28px;
 	margin: 1px 0 0 0;
 	padding: 0;
 }
-#tb_sidebars.postbox .meta-box-nav ul {
+#tb-sidebars-meta-box.postbox .meta-box-nav ul {
 	margin: 0;
 	padding: 0;
 	position: absolute;
 	right: 5px;
 	bottom: -1px;
 }
-#tb_sidebars.postbox .meta-box-nav li {
+#tb-sidebars-meta-box.postbox .meta-box-nav li {
 	float: left;
 	margin: 0 5px 0 0;
 	padding: 0;
 }
-#tb_sidebars.postbox .meta-box-nav li a {
+#tb-sidebars-meta-box.postbox .meta-box-nav li a {
 	border: 1px solid #dddddd;
 	color: #999999;
 	display: block;
@@ -142,31 +152,31 @@
 	padding: 8px 12px;
 	text-decoration: none;
 }
-#tb_sidebars.postbox .meta-box-nav li a.nav-tab-active {
+#tb-sidebars-meta-box.postbox .meta-box-nav li a.nav-tab-active {
 	background-color: #f5f5f5;
 	border-color: #dfdfdf;
 	border-bottom-color: #f5f5f5;
 	color: #333333;
 }
-#tb_sidebars.postbox .meta-box-nav li a:hover {
+#tb-sidebars-meta-box.postbox .meta-box-nav li a:hover {
 	background: #f5f5f5;
 }
-#tb_sidebars.postbox .tb-sidebar-override-icon {
+#tb-sidebars-meta-box.postbox .tb-sidebar-override-icon {
 	position: absolute;
 	top: 0;
 	left: 4px;
 }
-#tb_sidebars.postbox .tb-sidebar-override-icon:before {
+#tb-sidebars-meta-box.postbox .tb-sidebar-override-icon:before {
 	content: '\f107';
 	font-family: "dashicons";
 	font-size: 18px;
 }
 
 /* Override */
-#tb_sidebars.postbox .group .section:last-of-type {
+#tb-sidebars-meta-box.postbox .group .section:last-of-type {
 	border-bottom: none;
 }
-#tb_sidebars.postbox .ajax-overlay-sidebars-switch {
+#tb-sidebars-meta-box.postbox .ajax-overlay-sidebars-switch {
 	background: #f9f9f9;
 	display: none;
 	position: absolute;
@@ -176,43 +186,43 @@
 	left: 0;
 	z-index: 4;
 }
-#tb_sidebars.postbox #override_sidebars {
+#tb-sidebars-meta-box.postbox #tb-override-sidebar {
 	position: relative;
 }
-#tb_sidebars.postbox .section-info {
+#tb-sidebars-meta-box.postbox .section-info {
 	background: #f5f5f5;
 	border-bottom: 1px solid #dfdfdf;
 	padding: 15px;
 }
 
 /* Add Sidebar */
-#tb_sidebars.postbox #add_sidebar .section {
+#tb-sidebars-meta-box.postbox #tb-add-sidebar .section {
 	overflow: hidden;
 }
-#tb_sidebars.postbox .add-sidebar-note {
+#tb-sidebars-meta-box.postbox .add-sidebar-note {
 	color: #999999;
 	font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;
 	font-size: 13px;
 	font-style: italic;
 	padding: 7px 20px;
 }
-#tb_sidebars.postbox .add-sidebar-items input {
+#tb-sidebars-meta-box.postbox .add-sidebar-items input {
 	float: left;
 	margin-right: 4px;
 }
-#tb_sidebars.postbox .add-sidebar-items .button {
+#tb-sidebars-meta-box.postbox .add-sidebar-items .button {
 	float: left;
 	margin: 1px;
 }
-#tb_sidebars.postbox .add-sidebar-items .explain {
+#tb-sidebars-meta-box.postbox .add-sidebar-items .explain {
 	float: left;
 	margin: 4px 0 0 10px;
 	max-width: inherit;
 	padding: 0;
 }
-#tb_sidebars.postbox .inside h3 {
+#tb-sidebars-meta-box.postbox .inside h3 {
 	background: #f5f5f5;
 	border-bottom: 1px solid #dfdfdf;
 	margin: 0;
-    padding: 20px;
+	padding: 20px;
 }

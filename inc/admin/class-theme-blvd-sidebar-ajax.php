@@ -35,15 +35,15 @@ class Theme_Blvd_Sidebar_Ajax {
 
 		$this->admin_page = $admin_page;
 
-		add_action( 'wp_ajax_themeblvd_add_sidebar', array( $this, 'add_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd-add-sidebar', array( $this, 'add_sidebar' ) );
 
-		add_action( 'wp_ajax_themeblvd_quick_add_sidebar', array( $this, 'quick_add_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd-quick-add-sidebar', array( $this, 'quick_add_sidebar' ) );
 
-		add_action( 'wp_ajax_themeblvd_save_sidebar', array( $this, 'save_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd-save-sidebar', array( $this, 'save_sidebar' ) );
 
-		add_action( 'wp_ajax_themeblvd_delete_sidebar', array( $this, 'delete_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd-delete-sidebar', array( $this, 'delete_sidebar' ) );
 
-		add_action( 'wp_ajax_themeblvd_edit_sidebar', array( $this, 'edit_sidebar' ) );
+		add_action( 'wp_ajax_themeblvd-edit-sidebar', array( $this, 'edit_sidebar' ) );
 
 	}
 
@@ -54,7 +54,7 @@ class Theme_Blvd_Sidebar_Ajax {
 	 */
 	public function add_sidebar() {
 
-		check_ajax_referer( 'themeblvd_new_sidebar', 'security' );
+		check_ajax_referer( 'themeblvd-add-sidebar', 'security' );
 
 		parse_str( $_POST['data'], $config );
 
@@ -141,7 +141,7 @@ class Theme_Blvd_Sidebar_Ajax {
 	 */
 	public function quick_add_sidebar() {
 
-		check_ajax_referer( 'themeblvd_new_sidebar', 'security' );
+		check_ajax_referer( 'themeblvd-add-sidebar', 'security' );
 
 		parse_str( $_POST['data'], $data );
 
@@ -172,7 +172,7 @@ class Theme_Blvd_Sidebar_Ajax {
 	 */
 	public function save_sidebar() {
 
-		check_ajax_referer( 'themeblvd_save_sidebar', 'security' );
+		check_ajax_referer( 'themeblvd-save-sidebar', 'security' );
 
 		parse_str( $_POST['data'], $config );
 
@@ -278,7 +278,7 @@ class Theme_Blvd_Sidebar_Ajax {
 	 */
 	public function delete_sidebar() {
 
-		check_ajax_referer( 'themeblvd_manage_sidebars', 'security' );
+		check_ajax_referer( 'themeblvd-manage-sidebars', 'security' );
 
 		parse_str( $_POST['data'], $data );
 

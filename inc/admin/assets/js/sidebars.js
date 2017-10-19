@@ -1,346 +1,475 @@
-jQuery(document).ready(function($) {
+/**
+ * Widget Area Management
+ *
+ * @package Theme_Blvd_Widget_Area
+ * @license GPL-2.0+
+ */
+( function( $, admin ) {
 
-	/*-----------------------------------------------------------------------------------*/
-	/* Static Methods
-	/*-----------------------------------------------------------------------------------*/
+	var l10n = {};
 
-	var sidebar_blvd = {
+	if ( 'undefined' !== typeof themeblvdL10n ) {
+		l10n = themeblvdL10n;
+	} else if ( 'undefined' !== typeof themeblvd ) {
+		l10n = themeblvd;
+	}
 
-		// Delete Sidebar
-    	delete_sidebar : function( ids, action )
-    	{
-    		var nonce  = $('#manage_current_sidebars').find('input[name="_wpnonce"]').val();
-			tbc_confirm( themeblvd.delete_sidebar, {'confirm':true}, function(r)
-			{
-		    	if(r)
-		        {
-		        	$.ajax({
-						type: "POST",
-						url: ajaxurl,
-						data:
-						{
-							action: 'themeblvd_delete_sidebar',
-							security: nonce,
-							data: ids
-						},
-						success: function(response)
-						{
-							// Prepare response
-							response = response.split('[(=>)]');
+	admin = admin || {};
 
-							// Scroll to top of page
-							$('body').animate( { scrollTop: 0 }, 100, function(){
+	admin.sidebars = {};
 
-								// Insert update message, fade it in, and then remove it
-								// after a few seconds.
-								$('#sidebar_blvd #manage_sidebars').prepend(response[0]);
-								$('#sidebar_blvd #manage_sidebars .ajax-update').fadeIn(500, function(){
-									setTimeout( function(){
-										$('#sidebar_blvd #manage_sidebars .ajax-update').fadeOut(500, function(){
-											$('#sidebar_blvd #manage_sidebars .ajax-update').remove();
-										});
-							      	}, 1500);
+	if ( 'undefined' === typeof admin.confirm ) {
+		admin.confirm = tbc_confirm;
+	}
 
-								});
+	/**
+	 * Delete sidebar.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {String} ids    Serialized string of sidebar IDs to delete.
+	 * @param {String} action Event triggering the deletion.
+	 */
+	admin.sidebars.deleteSidebar = function( ids, action ) {
 
-								// Update table
-								$('#sidebar_blvd #manage_sidebars .ajax-mitt').hide().html(response[1]).fadeIn('fast');
+		var nonce = $( '#manage_current_sidebars' ).find( 'input[name="_wpnonce"]' ).val();
+
+		admin.confirm( l10n.delete_sidebar, { 'confirm': true }, function( response ) {
+
+			if ( response ) {
+				$.ajax( {
+					type: "POST",
+					url: ajaxurl,
+					data: {
+						action: 'themeblvd-delete-sidebar',
+						security: nonce,
+						data: ids
+					},
+					success: function( response ) {
+
+						// Prepare response.
+						response = response.split('[(=>)]');
+
+						// Scroll to top of page.
+						$( 'body' ).animate( { scrollTop: 0 }, 100, function() {
+
+							/*
+							 * Insert update message, fade it in, and then remove it
+							 * after a few seconds.
+							 */
+
+							$('#sidebar_blvd #manage_sidebars').prepend( response[ 0 ] );
+
+							$('#sidebar_blvd #manage_sidebars .ajax-update').fadeIn( 500, function() {
+
+								setTimeout( function() {
+
+									$('#sidebar_blvd #manage_sidebars .ajax-update').fadeOut( 500, function() {
+										$('#sidebar_blvd #manage_sidebars .ajax-update').remove();
+									} );
+
+								}, 1500 );
+
 							});
-						}
-					});
-		        }
-		    });
-    	}
+
+							// Update table.
+							$( '#sidebar_blvd #manage_sidebars .ajax-mitt' )
+								.hide()
+								.html( response[ 1 ] )
+								.fadeIn( 'fast' );
+
+						} );
+					}
+				} );
+			}
+		} );
 
 	};
 
-	/*-----------------------------------------------------------------------------------*/
-	/* General setup
-	/*-----------------------------------------------------------------------------------*/
+	$( document ).ready( function( $ ) {
 
-	// Items from themeblvd namespace
-	$('#sidebar_blvd .accordion').themeblvd('accordion');
+		/**
+		 * Setup accordion options.
+		 *
+		 * @since 1.0.0
+		 */
+		$( '#sidebar_blvd .accordion' ).themeblvd( 'accordion' );
 
-	// Hide secret tab when page loads
-	$('#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar').hide();
+		/**
+		 * Hides the empty "Edit" tab on initial page load.
+		 *
+		 * @since 1.0.0
+		 */
+		$( '#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar' ).hide();
 
-	// If the active tab is on edit layout page, we'll
-	// need to override the default functionality of
-	// the Options Framework JS, because we don't want
-	// to show a blank page.
-	if (typeof(localStorage) != 'undefined' )
-	{
-		if( localStorage.getItem('activetab') == '#edit_sidebar')
-		{
-			$('#sidebar_blvd .group').hide();
-			$('#sidebar_blvd .group:first').fadeIn();
-			$('#sidebar_blvd .nav-tab-wrapper a:first').addClass('nav-tab-active');
+		/**
+		 * Don't show an empty "Edit" tab.
+		 *
+		 * If the active tab is currently the "Edit" tab we want
+		 * to make sure it doesn't show on initial page load,
+		 * because it will be empty.
+		 *
+		 * @since 1.0.0
+		 */
+		if ( 'undefined' != typeof localStorage ) {
+
+			if ( '#edit_sidebar' === localStorage.getItem( 'activetab' ) ) {
+
+				$( '#sidebar_blvd .group' ).hide();
+
+				$( '#sidebar_blvd .group:first' ).fadeIn();
+
+				$( '#sidebar_blvd .nav-tab-wrapper a:first' ).addClass( 'nav-tab-active' );
+
+			}
 		}
-	}
 
-	/*-----------------------------------------------------------------------------------*/
-	/* Meta Box (layout builder used when editing pages directly)
-	/*-----------------------------------------------------------------------------------*/
+		/**
+		 * Cache meta box object on Edit Post screens.
+		 *
+		 * @since 1.1.0
+		 */
+		var $metaBox = $( '#tb-sidebars-meta-box' );
 
-	$('#tb_sidebars').each(function(){
+		/**
+		 * Setup tabs for meta box.
+		 *
+		 * @since 1.1.0
+		 */
+		$metaBox.find( '.meta-box-nav li:first a' ).addClass( 'nav-tab-active' );
 
-		var meta_box = $(this);
+		$metaBox.find( '.group' ).hide();
 
-		// Setup Tabs for Builder meta box
-		meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
-		meta_box.find('.group').hide();
-		meta_box.find('#override_sidebars').show();
-		meta_box.find('.meta-box-nav li a').click(function(){
-			var anchor = $(this), target = anchor.attr('href');
-			meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
-			anchor.addClass('nav-tab-active');
-			meta_box.find('.group').hide();
-			meta_box.find(target).show();
-			return false;
-		});
+		$metaBox.find( '#tb-override-sidebar' ).show();
 
-		// Setup new sidebar submit
-		meta_box.find('.new-sidebar-submit').click(function(){
+		$metaBox.find( '.meta-box-nav li a' ).on( 'click', function( event ) {
 
-			var el = $(this),
-				parent = el.closest('.add-sidebar-items'),
-				name = parent.find('input[name=_tb_new_sidebar_name]').val(),
-				nonce = parent.find('input[name=_tb_new_sidebar_nonce]').val(),
-				form_data = $('#post').serialize();
+			event.preventDefault();
 
-			// Tell user they forgot a name
-			if(!name)
-			{
-				tbc_confirm(themeblvd.no_name, {'textOk':'Ok'});
-			    return false;
+			var $link  = $( this ),
+				target = $link.attr( 'href' );
+
+			$metaBox.find( '.meta-box-nav li a' ).removeClass( 'nav-tab-active' );
+
+			$link.addClass( 'nav-tab-active' );
+
+			$metaBox.find( '.group' ).hide();
+
+			$metaBox.find( target ).show();
+
+		} );
+
+		/**
+		 * Handles submission to create a new sidebar.
+		 *
+		 * @since 1.1.0
+		 */
+		$metaBox.find( '.new-sidebar-submit' ).on( 'click', function( event ) {
+
+			event.preventDefault();
+
+			var $btn      = $( this ),
+				$parent   = $btn.closest( '.add-sidebar-items' ),
+				name      = $parent.find( 'input[name=_tb_new_sidebar_name]' ).val(),
+				nonce     = $parent.find( 'input[name=_tb_new_sidebar_nonce]' ).val(),
+				formData  = $( '#post' ).serialize();
+
+			// Tell user they forgot a name.
+			if ( ! name ) {
+
+				admin.confirm( l10n.no_name, { 'textOk':'Ok' } );
+
+				return false;
+
 			}
 
-			// Trigger loading indicators
-			meta_box.find('.meta-box-nav .ajax-overlay').css('visibility', 'visible').fadeIn('fast');
-			meta_box.find('.meta-box-nav .ajax-loading').css('visibility', 'visible').fadeIn('fast');
-			meta_box.find('#override_sidebars').prepend('<div class="ajax-overlay-sidebars-switch"></div>');
-			meta_box.find('#override_sidebars .ajax-overlay-sidebars-switch').fadeIn('fast');
+			// Trigger loading indicators.
+			$metaBox.find( '.meta-box-nav .ajax-overlay' ).css( 'visibility', 'visible' ).fadeIn( 'fast' );
+
+			$metaBox.find( '.meta-box-nav .ajax-loading' ).css( 'visibility', 'visible' ).fadeIn( 'fast' );
+
+			$metaBox.find( '#tb-override-sidebar' ).prepend( '<div class="ajax-overlay-sidebars-switch"></div>' );
+
+			$metaBox.find( '#tb-override-sidebar .ajax-overlay-sidebars-switch' ).fadeIn( 'fast' );
 
 			// Prep and exececute first Ajax call.
 			var data = {
-				action: 'themeblvd_quick_add_sidebar',
+				action: 'themeblvd-quick-add-sidebar',
 				security: nonce,
-				data: form_data
+				data: formData
 			};
-			$.post(ajaxurl, data, function(response) {
+			$.post( ajaxurl, data, function( response ) {
 
-				// Insert updated sidebar selects into meta box
-				meta_box.find('.ajax-mitt').html(response);
-				meta_box.find('.ajax-mitt').themeblvd('options', 'setup');
+				// Insert updated sidebar selects into meta box.
+				$metaBox.find( '.ajax-mitt' ).html( response );
+
+				$metaBox.find( '.ajax-mitt' ).themeblvd( 'options', 'setup' );
 
 				// Wait 1 second before bringing everything back.
-				setTimeout(function () {
+				setTimeout( function () {
 
 		    		// Switch user back to editing overrides
-					meta_box.find('.meta-box-nav li a').removeClass('nav-tab-active');
-					meta_box.find('.meta-box-nav li:first a').addClass('nav-tab-active');
-					meta_box.find('.group').hide();
-					meta_box.find('#override_sidebars').show();
+					$metaBox.find( '.meta-box-nav li a' ).removeClass( 'nav-tab-active' );
+
+					$metaBox.find( '.meta-box-nav li:first a' ).addClass( 'nav-tab-active' );
+
+					$metaBox.find( '.group' ).hide();
+
+					$metaBox.find( '#tb-override-sidebar' ).show();
 
 					// Disable loading indicaters
-					meta_box.find('.meta-box-nav .ajax-overlay').fadeOut('fast');
-					meta_box.find('.meta-box-nav .ajax-loading').fadeOut('fast');
-					meta_box.find('#override_sidebars .ajax-overlay-sidebars-switch').fadeOut('fast').remove();
+					$metaBox.find( '.meta-box-nav .ajax-overlay' ).fadeOut( 'fast' );
 
-					// Put user at the start of meta box
-					$('html,body').animate({
-						scrollTop: $('#tb_sidebars').offset().top - 30
-					}, 'fast');
+					$metaBox.find( '.meta-box-nav .ajax-loading' ).fadeOut( 'fast' );
 
-					// Show success message
-					tbc_alert.init(themeblvd.sidebar_created, 'success', '#tb_sidebars');
+					$metaBox.find( '#tb-override-sidebar .ajax-overlay-sidebars-switch' ).fadeOut( 'fast' ).remove();
 
-					// Clear name field back on new layout form
-					meta_box.find('input[name="_tb_new_sidebar_name"]').val('');
+					// Put user at the start of meta box.
+					$( 'html, body' ).animate( {
+						scrollTop: $( '#tb-sidebars-meta-box' ).offset().top - 30
+					}, 'fast' );
 
-				}, 1000);
+					// Clear name field back on new layout form.
+					$metaBox.find( 'input[name="_tb_new_sidebar_name"]' ).val( '' );
 
-			});
-			return false;
-		});
+				}, 1000 );
 
-	});
+			} );
 
-	/*-----------------------------------------------------------------------------------*/
-	/* Manage Widget Areas Page
-	/*-----------------------------------------------------------------------------------*/
+		} );
 
-	// Edit slider (via Edit Link on manage page)
-	$('#sidebar_blvd #manage_sidebars').on( 'click', '.edit-tb_sidebar', function() {
-		var name = $(this).closest('tr').find('.post-title .title-link').text(),
-			id = $(this).attr('href'),
-			id = id.replace('#', '');
+		/**
+		 * Edit custom sidebar.
+		 *
+		 * @since 1.0.0
+		 */
+		$( '#sidebar_blvd #manage_sidebars' ).on( 'click', '.edit-tb_sidebar', function( event ) {
 
-		$.ajax({
-			type: "POST",
-			url: ajaxurl,
-			data:
-			{
-				action: 'themeblvd_edit_sidebar',
-				data: id
-			},
-			success: function(response)
-			{
-				// Get the ID from the beginning
-				var page = response.split('[(=>)]');
+			event.preventDefault();
 
-				// Prepare the edit tab
-				$('#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar').text(themeblvd.edit_sidebar+': '+name).addClass('edit-'+page[0]);
-				$('#sidebar_blvd #edit_sidebar .ajax-mitt').html(page[1]);
+			var $link = $( this ),
+				name  = $link.closest( 'tr' ).find( '.post-title .title-link' ).text(),
+				id    = $link.attr( 'href' ),
+				id    = id.replace( '#', '' );
 
-				// Setup accordion
-				$('#sidebar_blvd #edit_sidebar .accordion').themeblvd('accordion');
+			$.ajax( {
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					action: 'themeblvd-edit-sidebar',
+					data: id
+				},
+				success: function( response ) {
 
-				// Setup options
-				$('#sidebar_blvd #edit_sidebar').themeblvd('options', 'setup');
+					var page = response.split( '[(=>)]' );
 
-				// Take us to the tab
-				$('#sidebar_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
-				$('#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar').show().addClass('nav-tab-active');
-				$('#sidebar_blvd .group').hide();
-				$('#sidebar_blvd .group:last').fadeIn();
+					// Prepare the edit tab.
+					$( '#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar' ).text( l10n.edit_sidebar + ': ' + name).addClass( 'edit-' + page[0] );
+
+					$( '#sidebar_blvd #edit_sidebar .ajax-mitt' ).html( page[1] );
+
+					// Setup options.
+					$( '#sidebar_blvd #edit_sidebar .accordion' ).themeblvd( 'accordion' );
+
+					$( '#sidebar_blvd #edit_sidebar' ).themeblvd( 'options', 'setup' );
+
+					// Take us to the tab.
+					$( '#sidebar_blvd .nav-tab-wrapper a' ).removeClass( 'nav-tab-active' );
+
+					$( '#sidebar_blvd .nav-tab-wrapper a.nav-edit-sidebar' ).show().addClass( 'nav-tab-active' );
+
+					$( '#sidebar_blvd .group' ).hide();
+
+					$( '#sidebar_blvd #edit_sidebar' ).fadeIn();
+
+					// Put user to the top of the page.
+					$( 'html, body' ).animate( {
+						scrollTop: 0
+					}, 'fast' );
+
+				}
+			} );
+
+		} );
+
+		/**
+		 * Delete a sidebar.
+		 *
+		 * @since 1.0.0
+		 */
+		$( '#sidebar_blvd' ).on( 'click', '.row-actions .trash a', function( event ) {
+
+			event.preventDefault();
+
+			var href = $( this ).attr( 'href' ),
+				id   = href.replace( '#', '' ),
+				ids  = 'posts%5B%5D=' + id;
+
+			admin.sidebars.deleteSidebar( ids, 'click' );
+
+		} );
+
+		/**
+		 * Delete a sidebar (in bulk).
+		 *
+		 * @since 1.0.0
+		 */
+		$( '#sidebar_blvd' ).on( 'submit', '#manage_current_sidebars', function( event ) {
+
+			event.preventDefault();
+
+			var $form = $( this ),
+				value = $form.find( 'select[name="action"]').val(),
+				ids   = $form.serialize();
+
+			if ( 'trash' === value ) {
+				admin.sidebars.deleteSidebar( ids, 'submit' );
 			}
-		});
-		return false;
-	});
 
-	// Delete sidebar (via Delete Link on manage page)
-	$('#sidebar_blvd').on( 'click', '.row-actions .trash a', function() {
-		var href = $(this).attr('href'), id = href.replace('#', ''), ids = 'posts%5B%5D='+id;
-		sidebar_blvd.delete_sidebar( ids, 'click' );
-		return false;
-	});
+		} );
 
-	// Delete sidebars via bulk action
-	$('#sidebar_blvd').on( 'submit', '#manage_current_sidebars', function() {
-		var value = $(this).find('select[name="action"]').val(), ids = $(this).serialize();
-		if(value == 'trash')
-		{
-			sidebar_blvd.delete_sidebar( ids, 'submit' );
-		}
-		return false;
-	});
+		/**
+		 * Add new sidebar.
+		 *
+		 * @since 1.0.0
+		 */
+		$( '.tb-options-wrap #add_new_sidebar' ).on( 'submit', function( event ) {
 
-	/*-----------------------------------------------------------------------------------*/
-	/* Add New Widget Area Page
-	/*-----------------------------------------------------------------------------------*/
+			event.preventDefault();
 
-	// Add new layout
-	$('#optionsframework #add_new_sidebar').submit(function(){
-		var el = $(this),
-			data = el.serialize(),
-			load = el.find('.ajax-loading'),
-			name = el.find('input[name="options[sidebar_name]"]').val(),
-			nonce = el.find('input[name="_wpnonce"]').val();
+			var $form = $( this ),
+				data  = $form.serialize(),
+				load  = $form.find( '.ajax-loading' ),
+				name  = $form.find( 'input[name="options[sidebar_name]"]' ).val(),
+				nonce = $form.find( 'input[name="_wpnonce"]' ).val();
 
-		// Tell user they forgot a name
-		if(!name)
-		{
-			tbc_confirm(themeblvd.no_name, {'textOk':'Ok'});
-		    return false;
-		}
+			// Tell user they forgot a name.
+			if ( ! name ) {
 
-		$.ajax({
-			type: "POST",
-			url: ajaxurl,
-			data:
-			{
-				action: 'themeblvd_add_sidebar',
-				security: nonce,
-				data: data
-			},
-			beforeSend: function()
-			{
-				load.fadeIn('fast');
-			},
-			success: function(response)
-			{
-				// Update management table
-				$('#sidebar_blvd #manage_sidebars .ajax-mitt').html(response);
+				admin.confirm( l10n.no_name, { 'textOk':'Ok' } );
 
-				// Scroll to top of page
-				$('body').animate( { scrollTop: 0 }, 100, function(){
-					// Take us back to the management tab
-					$('#sidebar_blvd .nav-tab-wrapper a').removeClass('nav-tab-active');
-					$('#sidebar_blvd .nav-tab-wrapper a:first').addClass('nav-tab-active');
-					$('#sidebar_blvd .group').hide();
-					$('#sidebar_blvd .group:first').fadeIn();
-					tbc_alert.init(themeblvd.sidebar_created, 'success');
-				});
+				return false;
 
-				// Clear form
-				$('#sidebar_blvd #add_new_sidebar #sidebar_name').val('');
-				$('#sidebar_blvd #add_new_sidebar input').removeAttr('checked');
-
-				// Hide loader no matter what.
-				load.hide();
 			}
-		});
-		return false;
-	});
 
-	/*-----------------------------------------------------------------------------------*/
-	/* Edit Widget Area Page
-	/*-----------------------------------------------------------------------------------*/
+			$.ajax({
+				type: 'POST',
+				url: ajaxurl,
+				data: {
+					action: 'themeblvd-add-sidebar',
+					security: nonce,
+					data: data
+				},
+				beforeSend: function() {
 
-	// Save Widget Area
-	$('#optionsframework').on( 'submit', '#edit_current_sidebar', function() {
-		var el = $(this),
-			data = el.serialize(),
-			load = el.find('.ajax-loading'),
-			nonce = el.find('input[name="_wpnonce"]').val();
+					load.fadeIn( 'fast' );
 
-		$.ajax({
-			type: "POST",
-			url: ajaxurl,
-			data:
-			{
-				action: 'themeblvd_save_sidebar',
-				security: nonce,
-				data: data
-			},
-			beforeSend: function()
-			{
-				load.fadeIn('fast');
-			},
-			success: function(response)
-			{
+				},
+				success: function( response ) {
 
-				response = response.split('[(=>)]');
+					// Update management table.
+					$( '#sidebar_blvd #manage_sidebars .ajax-mitt' ).html( response );
 
-				// Make sure all "Widget Area Names" match on current edit page.
-				current_name = $('#sidebar_blvd #post_title').val();
-				$('#sidebar_blvd #edit_sidebar-tab').text(themeblvd.edit_sidebar+': '+current_name);
-				$('#sidebar_blvd .postbox h3').text(current_name);
-				$('#sidebar_blvd #post_name').val(response[0]);
+					// Scroll to top of page.
+					$( 'body' ).animate( { scrollTop: 0 }, 100, function() {
 
-				// Scroll to top of page
-				$('body').animate( { scrollTop: 0 }, 100, function(){
-					// Insert update message, fade it in, and then remove it
-					// after a few seconds.
-					$('#sidebar_blvd #edit_sidebar').prepend(response[1]);
-					$('#sidebar_blvd #edit_sidebar .ajax-update').fadeIn(500, function(){
-						setTimeout( function(){
-							$('#sidebar_blvd #edit_sidebar .ajax-update').fadeOut(500, function(){
-								$('#sidebar_blvd #edit_sidebar .ajax-update').remove();
-							});
-				      	}, 1500);
+						// Take us back to the management tab.
+						$( '#sidebar_blvd .nav-tab-wrapper a' ).removeClass( 'nav-tab-active' );
+
+						$( '#sidebar_blvd .nav-tab-wrapper a:first' ).addClass( 'nav-tab-active' );
+
+						$( '#sidebar_blvd .group' ).hide();
+
+						$( '#sidebar_blvd .group:first' ).fadeIn();
 
 					});
-				});
 
-				// Update management table in background
-				$('#sidebar_blvd #manage_sidebars .ajax-mitt').html(response[2]);
+					// Clear form.
+					$( '#sidebar_blvd #add_new_sidebar #sidebar_name' ).val( '' );
 
-				load.fadeOut('fast');
-			}
-		});
-		return false;
-	});
+					$( '#sidebar_blvd #add_new_sidebar input' ).removeAttr( 'checked' );
 
-});
+					// Hide loader no matter what.
+					load.hide();
+
+				}
+			} );
+
+		} );
+
+		/**
+		 * Save a sidebar, being edited from the Edit tab.
+		 *
+		 * @since 1.0.0
+		 */
+		$('.tb-options-wrap').on( 'submit', '#edit_current_sidebar', function( event ) {
+
+			event.preventDefault();
+
+			var $form = $( this ),
+				data  = $form.serialize(),
+				load  = $form.find( '.ajax-loading'),
+				nonce = $form.find( 'input[name="_wpnonce"]').val();
+
+			$.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					action: 'themeblvd-save-sidebar',
+					security: nonce,
+					data: data
+				},
+				beforeSend: function() {
+
+					load.fadeIn( 'fast' );
+
+				},
+				success: function( response ) {
+
+					response = response.split( '[(=>)]' );
+
+					// Make sure all "Widget Area Names" match on current edit page.
+					var currentName = $( '#sidebar_blvd #post_title' ).val();
+
+					$( '#sidebar_blvd #edit_sidebar-tab' ).text( l10n.edit_sidebar + ': ' + currentName );
+
+					$( '#sidebar_blvd .postbox h3' ).text( currentName );
+
+					$( '#sidebar_blvd #post_name' ).val( response[0] );
+
+					// Scroll to top of page.
+					$( 'body' ).animate( { scrollTop: 0 }, 100, function() {
+
+						/*
+						 * Insert update message, fade it in, and then remove it
+						 * after a few seconds.
+						 */
+						$( '#sidebar_blvd #edit_sidebar' ).prepend( response[1] );
+
+						$( '#sidebar_blvd #edit_sidebar .ajax-update' ).fadeIn( 500, function() {
+
+							setTimeout( function() {
+
+								$( '#sidebar_blvd #edit_sidebar .ajax-update' ).fadeOut( 500, function() {
+
+									$( '#sidebar_blvd #edit_sidebar .ajax-update' ).remove();
+
+								} );
+
+						  	}, 1500 );
+
+						} );
+					} );
+
+					// Update management table in background.
+					$( '#sidebar_blvd #manage_sidebars .ajax-mitt' ).html( response[2] );
+
+					load.fadeOut( 'fast' );
+				}
+			} );
+
+		} );
+
+	} ); // End $( document ).ready().
+
+} )( jQuery, window.themeblvd );
