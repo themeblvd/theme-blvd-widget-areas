@@ -161,7 +161,7 @@ class Theme_Blvd_Sidebar_Manager {
 
 		$sidebar_screen = 'appearance_page_themeblvd_widget_areas';
 
-		$suffix = SCRIPT_DEBUG ? '' : '.min';
+		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
 		/*
 		 * For the Sidebar Manager page at Appearance > Widget
