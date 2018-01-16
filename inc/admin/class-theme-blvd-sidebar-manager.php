@@ -153,7 +153,7 @@ class Theme_Blvd_Sidebar_Manager {
 	 * Loads the CSS and JavaScript for the admin page and
 	 * the Edit Post screen for the meta box.
 	 *
-	 * @since 1.2.5
+	 * @since 1.3.0
 	 */
 	public function load_assets() {
 
@@ -646,7 +646,7 @@ class Theme_Blvd_Sidebar_Manager {
 		 *
 		 * @link http://dev.themeblvd.com/tutorial/formatting-options
 		 *
-		 * @since 1.2.5
+		 * @since 1.3.0
 		 *
 		 * @param array Options compatible with Theme Blvd framework options system.
 		 */
@@ -688,7 +688,7 @@ class Theme_Blvd_Sidebar_Manager {
 		 * make sure to use this filter to add in the saved settings
 		 * for each of your options.
 		 *
-		 * @since 1.2.5
+		 * @since 1.3.0
 		 *
 		 * @param array Retrieved settings for option values.
 		 */
