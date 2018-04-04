@@ -3,6 +3,7 @@ Author URI: http://www.themeblvd.com
 Contributors: themeblvd
 Tags: custom sidebars, sidebar, sidebars, widget, widgets, widget areas, unlimited sidebars, Theme Blvd, themeblvd, Jason Bobich
 Stable Tag: 1.3.0
+Tested up to: 4.9
 
 When using a Theme Blvd theme, this plugin extends the framework's widget area system.
 
